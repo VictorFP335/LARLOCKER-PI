@@ -13,7 +13,7 @@ R:Ele ajuda a manter o histórico de um projeto organizado e facilita a colabora
  	
 Commits: Um commit é uma “foto” do seu projeto em um determinado momento. Cada commit tem um identificador único (hash) e inclui uma mensagem descritiva, facilitando o rastreamento de mudanças.
 
-- Branches: Branches (ramificações) permitem que você trabalhe em diferentes linhas de desenvolvimento simultaneamente. A branch principal é geralmente chamada de main ou master, mas você pode criar branches para novas funcionalidades, correções de bugs, etc.
+## Branches: Branches (ramificações): permitem que você trabalhe em diferentes linhas de desenvolvimento simultaneamente. A branch principal é geralmente chamada de main ou master, mas você pode criar branches para novas funcionalidades, correções de bugs, etc.
 - Merging: Quando uma branch está pronta, você pode mesclar (merge) suas alterações de volta à branch principal. Isso combina as mudanças de diferentes branches em uma única linha de desenvolvimento.
 - Repositório Remoto: Além do repositório local, você pode ter um repositório remoto (por exemplo, no GitHub). Isso facilita a colaboração, pois os desenvolvedores podem “puxar” (pull) alterações do repositório remoto e “empurrar” (push) suas próprias alterações para ele.
 - Pull Requests: No contexto de repositórios remotos, os pull requests são usados para revisar e discutir mudanças antes de mesclá-las. Isso ajuda a garantir a qualidade do código e facilita a colaboração.

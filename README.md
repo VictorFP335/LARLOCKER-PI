@@ -1,2 +1,4 @@
 # Programa-o-WEB-PI
-Porjeto Integrador das disciplinas de Banco de Dados Relacional e Programação Web
+Projeto Integrador das disciplinas de Banco de Dados Relacional e Programação Web PUC-Campinas
+
+

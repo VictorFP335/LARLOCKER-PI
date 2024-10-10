@@ -8,7 +8,7 @@ Um sistema de controle de versões usado principalmente no desenvolvimento de so
 ## Como o Git funciona?
 Ele ajuda a manter o histórico de um projeto organizado e facilita a colaboração entre desenvolvedores, usando como exemplo commit, push, pull, branch, merge.
 
-## Principais comandos e suas funções (clone, commit, push, pull, branch, merge).
+## Principais comandos e suas funções (clone, commit, push, pull, branch, merge)?
 
   - Repositório Local: Cada desenvolvedor tem uma cópia completa do repositório em seu próprio computador. Isso inclui todo o histórico de alterações, permitindo trabalhar offline e fazer commits locais.
  	
@@ -20,7 +20,7 @@ Ele ajuda a manter o histórico de um projeto organizado e facilita a colaboraç
 - Pull Requests: No contexto de repositórios remotos, os pull requests são usados para revisar e discutir mudanças antes de mesclá-las. Isso ajuda a garantir a qualidade do código e facilita a colaboração.
 Staging Area: Antes de fazer um commit, você pode adicionar arquivos à área de preparação (staging area). Isso permite que você selecione exatamente quais mudanças deseja incluir no próximo commit.
 
-## Vantagens do uso do Git no desenvolvimento de software.
+## Vantagens do uso do Git no desenvolvimento de software?
 -	Controle de Versão Preciso: O Git permite rastrear todas as mudanças feitas no código ao longo do tempo. Isso facilita voltar a versões anteriores, comparar alterações e identificar a origem de problemas, melhorando a depuração e a estabilidade do projeto1.
 Trabalho em Equipe Simplificado: Com o Git, várias pessoas podem trabalhar no mesmo projeto simultaneamente sem conflitos constantes. As branches permitem que cada membro da equipe trabalhe em suas próprias funcionalidades ou correções de bugs de forma isolada2.
 -	Colaboração Facilitada: Ferramentas como GitHub adicionam uma camada de colaboração ao Git. Elas permitem que os desenvolvedores criem pull requests para discutir e revisar o código, promovendo uma colaboração mais eficaz e transparente1.

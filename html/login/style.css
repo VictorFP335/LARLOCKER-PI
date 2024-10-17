@@ -1,0 +1,45 @@
+html, body{
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /*border: 3px solid aliceblue;*/
+    width: 100%;
+}
+form{
+    /*border: 3px solid blue;*/
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding: 10px;
+    color: rgb(180, 180, 180);
+}
+input{
+    border: 2px solid purple;
+    border-radius: 3px;
+    color: rgb(180, 180, 180);
+    background-color: black;
+    padding: 10px;
+}
+label{
+    text-align: left;
+}
+#enviar {
+    border-radius: 30px;
+    background-color: purple;
+}
+section{
+    text-align: center;
+    color: purple;
+}
+a{
+    text-decoration: none;
+    text-align: center;
+    color: purple;
+}
+a:hover{
+    text-decoration: underline;
+}
+/*gateemiéli*/

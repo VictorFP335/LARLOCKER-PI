@@ -1,51 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Larlocker - Controle sua Casa</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login - Larlocker</title>
 </head>
 <body>
-
-    <!-- Menu Lateral -->
-    <div id="menu-lateral">
-        <img src="larlocker-logo.png" alt="Logo Larlocker" id="logo">
-        <nav>
-            <ul>
-                <li><a href="#">Procurar</a></li>
-                <li><a href="#">Lista de compras</a></li>
-                <li>
-                    Modo claro
-                    <label class="switch">
-                        <input type="checkbox" id="toggle-dark-mode">
-                        <span class="slider"></span>
-                    </label>
-                </li>
-                <li><a href="#">Perfil</a></li>
-                <li><a href="#">Ajuda</a></li>
-                <li><a href="#">Logoff</a></li>
-            </ul>
-        </nav>
-    </div>
-
-    <!-- Conteúdo Principal -->
-    <div id="conteudo">
-        <h1>Altere o nome da sua casa</h1>
-        <div class="ambiente">
-            <img src="sala.jpg" alt="Sala">
-            <p>Sala</p>
-        </div>
-        <div class="ambiente">
-            <img src="quarto.jpg" alt="Quarto">
-            <p>Quarto</p>
-        </div>
-        <div class="ambiente">
-            <img src="cozinha.jpg" alt="Cozinha">
-            <p>Cozinha</p>
-        </div>
-    </div>
-
+    <img src="larlocker.png" width="60%" alt="Larlocker Logo">
+    <form action="#" method="post">    
+        <label>Email:</label>
+        <input type="email" placeholder="@gmail.com" required>
+        <br>
+        <label>Senha:</label>
+        <input type="password" placeholder="Sua senha" required>
+        <br><input id="enviar" type="submit" value="Entrar">
+        <br><a href="recuperar-senha.html">Esqueceu sua senha?</a>
+        <br><section>Não tem uma conta? <a href="cadastro.html">Inscreva-se</a></section>
+        <p id="error-message" class="error"></p>
+    </form>
     <script src="script.js"></script>
+
+    <div class="social-login-container">
+        <h2>Login com Redes Sociais</h2>
+        
+        <!-- Botão para Facebook -->
+        <a href="https://pt-br.facebook.com/" href="/auth/facebook" class="btn-social fb">
+            <img src="facebook-icon.png" alt="Facebook">
+            Entrar com Facebook
+        </a>
+
+        <!-- Botão para Instagram -->
+        <a href="https://www.instagram.com/" href="/auth/instagram" class="btn-social ig">
+            <img src="instagram-icon.png" alt="Instagram">
+            Entrar com Instagram
+        </a>
+
+        <!-- Link para a página inicial do Gmail -->
+        <a href="https://mail.google.com" href="/auth/google" target="_blank" class="btn-social gmail">
+            <img src="gmail-icon.png" alt="Gmail">
+            Acesse Gmail
+        </a>
+    </div>
+
 </body>
 </html>
+

@@ -1,131 +1,90 @@
-/* Estilos básicos */
-body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    display: flex;
-}
-
-/* Menu lateral */
-#menu-lateral {
-    background-color: #333;
-    color: #fff;
-    width: 250px;
-    padding: 20px;
+html, body{
+    background-color: black;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    height: 100vh;
-}
-
-#menu-lateral img#logo {
+    justify-content: center;
+    align-items: center;
+    /*border: 3px solid aliceblue;*/
     width: 100%;
-    margin-bottom: 40px;
 }
-
-#menu-lateral nav ul {
-    list-style: none;
-    padding: 0;
+form{
+    /*border: 3px solid blue;*/
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding: 10px;
+    color: rgb(180, 180, 180);
 }
-
-#menu-lateral nav ul li {
-    margin: 20px 0;
-    font-size: 1.2em;
+input{
+    border: 2px solid purple;
+    border-radius: 3px;
+    color: rgb(180, 180, 180);
+    background-color: black;
+    padding: 10px;
 }
-
-#menu-lateral nav ul li a {
-    color: #fff;
-    text-decoration: none;
+label{
+    text-align: left;
 }
-
-/* Modo Claro/Escuro */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 40px;
-    height: 20px;
+#enviar:hover {
+    border-radius: 30px;
+    background-color: #800080;
 }
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 20px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 14px;
-    width: 14px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: #2196F3;
-}
-
-input:checked + .slider:before {
-    transform: translateX(20px);
-}
-
-/* Conteúdo Principal */
-#conteudo {
-    flex: 1;
-    padding: 20px;
-    background-color: #121212;
-    color: #fff;
-}
-
-#conteudo h1 {
-    font-size: 2em;
-}
-
-.ambiente {
-    margin: 20px 0;
+section{
     text-align: center;
+    color: #800080;
+}
+a{
+    text-decoration: none;
+    text-align: center;
+    color: purple;
+}
+a:hover{
+    text-decoration: underline;
 }
 
-.ambiente img {
-    width: 100%;
-    border-radius: 10px;
+social-login-container {
+    width: 300px;
+    margin: 0 auto;
 }
 
-.ambiente p {
-    margin-top: 10px;
-    font-size: 1.5em;
+h2 {
+    color: #c40de4;
 }
 
-/* Modo Claro */
-.light-mode {
-    background-color: #f5f5f5;
-    color: #000;
+.btn-social {
+    display: block;
+    margin: 10px 0;
+    padding: 10px;
+    text-align: left;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
 }
 
-.light-mode #conteudo {
-    background-color: #fff;
-    color: #000;
+.btn-social img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
 
-.light-mode #menu-lateral {
-    background-color: #ccc;
-    color: #000;
+.fb {
+    background-color: #3b5998;
 }
 
-.light-mode #menu-lateral nav ul li a {
-    color: #000;
+.ig {
+    background-color: #E1306C;
 }
+
+.gmail {
+    background-color: #D44638;
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/*gateemiéli*/

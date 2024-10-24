@@ -1,0 +1,131 @@
+/* Estilos básicos */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    display: flex;
+}
+
+/* Menu lateral */
+#menu-lateral {
+    background-color: #333;
+    color: #fff;
+    width: 250px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100vh;
+}
+
+#menu-lateral img#logo {
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+#menu-lateral nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+#menu-lateral nav ul li {
+    margin: 20px 0;
+    font-size: 1.2em;
+}
+
+#menu-lateral nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Modo Claro/Escuro */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 20px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+/* Conteúdo Principal */
+#conteudo {
+    flex: 1;
+    padding: 20px;
+    background-color: #121212;
+    color: #fff;
+}
+
+#conteudo h1 {
+    font-size: 2em;
+}
+
+.ambiente {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.ambiente img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.ambiente p {
+    margin-top: 10px;
+    font-size: 1.5em;
+}
+
+/* Modo Claro */
+.light-mode {
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+.light-mode #conteudo {
+    background-color: #fff;
+    color: #000;
+}
+
+.light-mode #menu-lateral {
+    background-color: #ccc;
+    color: #000;
+}
+
+.light-mode #menu-lateral nav ul li a {
+    color: #000;
+}

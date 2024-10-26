@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Senha - Larlocker</title>
@@ -9,12 +9,14 @@
 <body>
     <h2>Recuperar Senha</h2>
     <form action="#" method="post">
+        <img src="{{ url_for('static', filename='img/login/larlocker.png') }}" alt="Logo">
         <label>Email cadastrado:</label>
         <input type="email" placeholder="Digite seu email" required>
         <br><br>
         <input id="enviar" type="submit" value="Enviar link de recuperação">
-        <br><a href="index.html">Voltar para Login</a>
+        <br><a href="{{ url_for('home') }}">Voltar para Login</a>
     </form>
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 </body>
 </html>

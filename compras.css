@@ -1,0 +1,76 @@
+/* Estilos gerais */
+body {
+    background-color: #000000; /* Fundo preto */
+    color: #FFFFFF; /* Texto branco */
+}
+
+/* Header e Ícones */
+header {
+    color: #ff00ff; /* Cor roxa para o título */
+    font-weight: bold;
+}
+
+#logo {
+    max-width: 50px;
+}
+
+.btn-link {
+    color: #ff00ff; /* Ícones roxos no topo */
+    font-size: 1.5rem;
+}
+
+h1 {
+    color: #ff00ff; /* Título roxo */
+    font-size: 2.5rem;
+}
+
+h2 {
+    color: #FFFFFF; /* Subtítulo branco */
+    font-size: 1.5rem;
+}
+
+/* Botões de Frequência */
+.btn-group .btn-outline-primary {
+    color: #ff00ff; /* Texto roxo */
+    border-color: #ff00ff; /* Borda roxa */
+}
+
+.btn-group .btn-outline-primary.active {
+    background-color: #ff00ff; /* Fundo roxo ao selecionar */
+    color: #ffffff; /* Texto branco */
+    border-color: #ff00ff;
+}
+
+/* Estilo da lista de itens */
+.list-group-item {
+    background-color: #3d003d; /* Fundo roxo escuro */
+    color: #ffffff; /* Texto branco */
+    border: none;
+}
+
+.list-group-item .badge {
+    background-color: #ff00ff; /* Fundo roxo para as quantidades */
+    color: #ffffff; /* Texto branco */
+}
+
+/* Botões de editar e remover */
+.edit-item, .delete-item {
+    background-color: #ff00ff; /* Roxo para os botões de ação */
+    border: none;
+    color: #ffffff;
+}
+
+.edit-item:hover, .delete-item:hover {
+    background-color: #b300b3; /* Roxo mais escuro ao passar o mouse */
+}
+
+/* Botão de adicionar item (+) */
+.btn-primary {
+    background-color: #ff00ff; /* Fundo roxo */
+    border: none;
+}
+
+#add-item-button {
+    color: white;
+    font-size: 1.5rem;
+}

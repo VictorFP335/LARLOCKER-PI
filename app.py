@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -7,28 +5,32 @@ from config import DB_CONFIG
 
 app = Flask(__name__)
 
-
 # Configuração do banco de dados MySQL
 app.config['MYSQL_HOST'] = DB_CONFIG['MYSQL_HOST']
 app.config['MYSQL_USER'] = DB_CONFIG['MYSQL_USER']
 app.config['MYSQL_PASSWORD'] = DB_CONFIG['MYSQL_PASSWORD']
 app.config['MYSQL_DATABASE'] = DB_CONFIG['MYSQL_DATABASE']
+app.secret_key = 'your_secret_key'  # Defina uma chave secreta para sessões
 
 mysql = MySQL(app)
-'''
-app.route('style.css')
-def serve_css():
-    css_content = get_asset_content('css')
-    return Response(css_content, mimetype='text/css')
 
-# Rota para servir JS
-@app.route('script.js')
-def serve_js():
-    js_content = get_asset_content('js')
-    return Response(js_content, mimetype='application/javascript')
-'''
-@app.route('/cadastro')
+@app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Gerar o hash da senha
+        password_hash = generate_password_hash(password)
+
+        # Inserir o usuário no banco de dados
+        cursor = mysql.connection.cursor()
+        cursor.execute("INSERT INTO users (username, password_hash) VALUES (%s, %s)", (username, password_hash))
+        mysql.connection.commit()
+        cursor.close()
+
+        return redirect(url_for('home'))
+
     return render_template('cadastro.html')
 
 @app.route('/recuperar-senha')
@@ -37,10 +39,6 @@ def recuperar_senha():
 
 @app.route('/comodo', methods=['GET', 'POST'])
 def comodo():
-    # Verifique se é uma requisição POST
-    if request.method == 'POST':
-        
-        pass
     # Lógica para GET ou resposta padrão
     contatos = [
         {'nome_prod': 'Produto A', 'qtd_prod': '10'},
@@ -52,8 +50,6 @@ def comodo():
 def home():
     return render_template('login.html')
 
-
-
 @app.route('/login', methods=['POST'])
 def login():
     username = request.form['username']
@@ -62,7 +58,7 @@ def login():
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
     user = cursor.fetchone()
-    cursor.close()  # Fechar o cursor após a execução da consulta
+    cursor.close()
 
     if user and check_password_hash(user[2], password):  # user[2] deve ser o campo de senha
         session['username'] = username
@@ -84,6 +80,3 @@ def logout():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-
->>>>>>> Stashed changes

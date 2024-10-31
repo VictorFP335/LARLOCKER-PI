@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LarLocker - Lista de Compras</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/lista_compras/compras.css">
+</head>
+<body>
+    <div class="container text-center my-4">
+        <!-- Header com Logo e Ícones -->
+        <header class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <img src="logo.png" alt="Logo" id="logo" width="50"> <!-- Imagem do logo -->
+            </div>
+            <h1 class="m-0">LARLOCKER</h1>
+            <div class="d-flex">
+                <button class="btn btn-link text-white" id="search-button"><i class="fas fa-search"></i></button>
+                <button class="btn btn-link text-white" id="settings-button"><i class="fas fa-cog"></i></button>
+            </div>
+        </header>
+
+        <!-- Títulos e Opções de Organização -->
+        <div class="text-center mb-4">
+            <h2>Lista de compras</h2>
+            <div class="btn-group" role="group" aria-label="Opções de Frequência">
+                <button type="button" class="btn btn-outline-primary active" id="monthly-button">Mensal</button>
+                <button type="button" class="btn btn-outline-primary" id="weekly-button">Semanal</button>
+            </div>
+        </div>
+
+        <!-- Lista de Itens -->
+        <div id="shopping-list" class="shopping-list list-group mb-4">
+            <!-- Itens de exemplo são adicionados dinamicamente via JavaScript -->
+        </div>
+
+        <!-- Botão de Adicionar Item -->
+        <button id="add-item-button" class="btn btn-primary rounded-circle btn-lg" data-toggle="modal" data-target="#addItemModal">+</button>
+    </div>
+
+    <!-- Modal para Adicionar Itens -->
+    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemModalLabel">Adicionar Item</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="item-name" class="form-control mb-3" placeholder="Nome do Item">
+                    <input type="number" id="item-quantity" class="form-control" placeholder="Quantidade" min="1" value="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="save-item" class="btn btn-primary">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ícones de FontAwesome -->
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/lista_compras/compras.js"></script>
+</body>
+</html>
+
+

@@ -9,12 +9,12 @@
 </head>
 <body>
     <img src="{{ url_for('static', filename='img/login/larlocker.png') }}" alt="Logo">
-    <form action="#" method="post">    
+    <form action="{{ url_for('login') }}" method="post">
         <label>Email:</label>
-        <input type="email" placeholder="@gmail.com" required>
+        <input type="email" name="email" placeholder="@gmail.com" required>
         <br>
         <label>Senha:</label>
-        <input type="password" placeholder="Sua senha" required>
+        <input type="password" name="password" placeholder="Sua senha" required>        
         <br><input id="enviar" type="submit" value="Entrar">        
         <br><a href="{{ url_for('recuperar_senha') }}">Esqueceu sua senha?</a>
         <br><section>Não tem uma conta? <a href="{{ url_for('cadastro') }}">Inscreva-se</a></section>
@@ -26,7 +26,7 @@
         <h2>Login com Redes Sociais</h2>
         
         <!-- Botão para Facebook -->
-        <a href="https://pt-br.facebook.com/" href="/auth/facebook" class="btn-social fb">
+        <a href="https://pt-br.facebook.com/" class="btn-social fb">
             <img src="{{ url_for('static', filename='img/login/face.png') }}" height="60px" alt="Facebook">
             Entrar com Facebook
         </a>

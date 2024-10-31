@@ -8,48 +8,25 @@
 </head>
 <body>
     <h2>Criar Conta</h2>
-    <img src="{{ url_for('static', filename='img/login/larlocker.png') }}" width=25% alt="Logo">
-    <form action="#" method="post">
-        <label>Nome Completo:</label>  
-        <br>  
-        <input type="text" placeholder="Digite seu nome" required>
-        <br><br>
+    <form action="/cadastro" method="post">
+        <label>Nome Completo:</label>
+        <br>
+        <input type="text" name="fullname" placeholder="Digite seu nome" required>
+        <br>
         <label>Email:</label>
         <br>
-        <input type="email" placeholder="Digite seu email" required>
-        <br><br>
+        <input type="email" name="email" placeholder="Digite seu email" required>
+        <br>
         <label>Senha:</label>
         <br>
-        <input type="password" placeholder="Digite uma senha" required>
-        <br><br>
+        <input type="password" name="password" placeholder="Digite uma senha" required>
+        <br>
         <label>Confirme sua Senha:</label>
-        <input type="password" placeholder="Confirme sua senha" required>
-        <br><br>
+        <input type="password" name="confirm_password" placeholder="Confirme sua senha" required>
+        <br>
         <input id="enviar" type="submit" value="Cadastrar">
         <br><a href="{{ url_for('home') }}">Já tem uma conta? Entrar</a>
     </form>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
-    <div class="social-login-container">
-        <h2>Login com Redes Sociais</h2>
-        
-        <!-- Botão para Facebook -->
-        <a href="https://pt-br.facebook.com/" href="/auth/facebook" class="btn-social fb">
-            <img src="{{ url_for('static', filename='img/login/face.png') }}" height="60px" alt="Facebook">
-            Entrar com Facebook
-        </a>
-
-        <!-- Botão para Instagram -->
-        <a href="https://www.instagram.com/" href="/auth/instagram" class="btn-social ig">
-            <img src="{{ url_for('static', filename='img/login/insta.png') }}" height="60px" alt="Instagram">
-            Entrar com Instagram
-        </a>
-
-        <!-- Link para a página inicial do Gmail -->
-        <a href="https://mail.google.com" href="/auth/google" target="_blank" class="btn-social gmail">
-            <img src="{{ url_for('static', filename='img/login/gmail2.jpg') }}" height="60px" alt="Gmail">
-            Acesse Gmail
-        </a>
-    </div>
 </body>
 </html>

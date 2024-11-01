@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Larlocker</title>
+</head>
+<body>
+    <h2>Criar Conta</h2>
+    <form action="/cadastro" method="post">
+        <label>Nome Completo:</label>
+        <br>
+        <input type="text" name="fullname" placeholder="Digite seu nome" required>
+        <br>
+        <label>Email:</label>
+        <br>
+        <input type="email" name="email" placeholder="Digite seu email" required>
+        <br>
+        <label>Senha:</label>
+        <br>
+        <input type="password" name="password" placeholder="Digite uma senha" required>
+        <br>
+        <label>Confirme sua Senha:</label>
+        <input type="password" name="confirm_password" placeholder="Confirme sua senha" required>
+        <br>
+        <input id="enviar" type="submit" value="Cadastrar">
+        <br><a href="{{ url_for('home') }}">Já tem uma conta? Entrar</a>
+    </form>
+
+</body>
+</html>

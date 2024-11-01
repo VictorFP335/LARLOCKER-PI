@@ -1,15 +1,17 @@
 from flask import Flask, render_template, request, redirect, session
 from flask_mysql_connector import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
+from config import DB_CONFIG
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Configuração do banco de dados MySQL
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'Tukaninha123'
-app.config['MYSQL_DATABASE'] = 'projeto'
+app.config['MYSQL_HOST'] = DB_CONFIG['MYSQL_HOST']
+app.config['MYSQL_USER'] = DB_CONFIG['MYSQL_USER']
+app.config['MYSQL_PASSWORD'] = DB_CONFIG['MYSQL_PASSWORD']
+app.config['MYSQL_DATABASE'] = DB_CONFIG['MYSQL_DATABASE']
+app.secret_key = 'your_secret_key'
 
 mysql = MySQL(app)
 

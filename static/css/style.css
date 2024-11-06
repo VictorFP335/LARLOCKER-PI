@@ -1,4 +1,5 @@
-html, body{
+html,
+body {
     background-color: black;
     display: flex;
     flex-direction: column;
@@ -7,7 +8,8 @@ html, body{
     /*border: 3px solid aliceblue;*/
     width: 100%;
 }
-form{
+
+form {
     /*border: 3px solid blue;*/
     width: 35%;
     display: flex;
@@ -16,30 +18,36 @@ form{
     padding: 10px;
     color: rgb(180, 180, 180);
 }
-input{
+
+input {
     border: 2px solid purple;
     border-radius: 3px;
     color: rgb(180, 180, 180);
     background-color: black;
     padding: 10px;
 }
-label{
+
+label {
     text-align: left;
 }
+
 #enviar:hover {
     border-radius: 30px;
     background-color: #800080;
 }
-section{
+
+section {
     text-align: center;
     color: #800080;
 }
-a{
+
+a {
     text-decoration: none;
     text-align: center;
     color: purple;
 }
-a:hover{
+
+a:hover {
     text-decoration: underline;
 }
 
@@ -85,6 +93,48 @@ h2 {
     color: red;
     font-weight: bold;
     margin-top: 20px;
+}
+
+.error-message {
+    color: #FF0000;
+    background-color: #FFD2D2;
+    border: 1px solid #FF0000;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    display: none;
+}
+
+.flash-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.flash-message {
+    display: flex;
+    align-items: center;
+    background-color: #ffcc00;
+    /* Cor de fundo para o alerta */
+    color: #333;
+    /* Cor do texto */
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1em;
+    max-width: 400px;
+}
+
+.flash-message.error {
+    background-color: #ffebcc;
+    /* Cor de fundo mais clara para o alerta */
+    color: #b50000;
+    /* Cor do texto para erro */
+}
+
+.flash-icon {
+    margin-right: 10px;
+    font-size: 1.5em;
 }
 
 /*gateemiéli*/

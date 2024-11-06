@@ -64,24 +64,21 @@ document.getElementById("enviar").addEventListener("click", function(event) {
 const caixa = document.getElementById("enviar");
 
 // Adiciona evento mouseover
-caixa.addEventListener("mouseover", function() {
+caixa.addEventListener("mouseover", function () {
     caixa.style.backgroundColor = "#0056b3"; // Muda a cor de fundo quando o mouse passa
 });
 
 // Adiciona evento mouseout
-caixa.addEventListener("mouseout", function() {
+caixa.addEventListener("mouseout", function () {
     caixa.style.backgroundColor = "#800080"; // Retorna à cor original quando o mouse sai
 });
 
-meuBotao.addEventListener("mouseup", function() {
-    alert("Botão foi solto!");
-});
 
-caixa.addEventListener("mousemove", function(event) {
+caixa.addEventListener("mousemove", function (event) {
     const rect = caixa.getBoundingClientRect(); // Pega as coordenadas do elemento
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    
+
     // Verifica se o mouse está próximo do centro (uma margem de erro de 10px)
     if (Math.abs(event.clientX - centerX) < 10 && Math.abs(event.clientY - centerY) < 10) {
         caixa.style.backgroundColor = "lightyellow";
@@ -89,25 +86,9 @@ caixa.addEventListener("mousemove", function(event) {
     }
 });
 
-document.getElementById("loginForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Impede o envio do formulário para verificação
-
-    // Pegando os valores dos campos de texto e senha
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-
-    // Exemplo de dados corretos para validação
-    const validUsername = "usuario@gmail.com";
-    const validPassword = "123456";
-
-    // Checa se o nome de usuário e senha estão corretos
-    if (username === validUsername && password === validPassword) {
-        alert("Login bem-sucedido!");
-        // Aqui você pode redirecionar para outra página, por exemplo
-        window.location.href = "home.html";
-    } else {
-        // Mostra a mensagem de erro
-        const errorMessage = document.getElementById("error-message");
-        errorMessage.textContent = "Nome de usuário ou senha incorretos.";
+function showError() {
+    var errorBox = document.getElementById('error-box');
+    if (errorBox) {
+        errorBox.style.display = 'block';
     }
-});
+}

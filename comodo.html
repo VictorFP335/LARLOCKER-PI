@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<<<<<<< HEAD
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_comodo.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cômodo - Larlocker</title>
+</head>
+
+
+<body>
+    <aside>
+        <ul>
+            <li>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='img/lupa.png') }}" width="40px" height="40px">
+                    <br>Procurar
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='img/carrinho.png') }}" width="40px" height="40px">
+                    <br>Lista de compras
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='img/lupa.png') }}" width="40px" height="40px">
+                    <br>Modo claro
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='img/perfil.png') }}" width="40px" height="40px">
+                    <br>Conta
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='img/ajuda.png') }}" width="40px" height="40px">
+                    <br>Ajuda
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <img src="{{ url_for('static', filename='img/sair.png') }}" width="40px" height="40px">
+                    <br>Sair
+                    </a>
+            </li>
+
+        </ul>
+    </aside>
+    <main>
+        <img src="{{ url_for('static', filename='img/larlocker.png') }}" width=60%><br>
+        <table>
+            <tr><th>Produto</th><th>Quantidade</th></tr>
+                {% for contato in contatos %}
+                <tr>
+                    <td>{{ nome_prod[0] }}</td>
+                    <td>{{ qtd_prod[1] }}</td>
+                {% endfor %}
+                </tr>
+                <!--<tr><td>b</td><td>b</td></tr>
+                <tr><td>c</td><td>c</td></tr>-->
+        </table>  
+    </main>
+    
+    <script src="{{ url_for('static', filename='js/script_comodo.js') }}"></script>
+</body>
+
+
+=======
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style_comodo.css') }}" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="comodoTitle"></title>
+  <link rel="icon" href="{{ url_for('static', filename='img/img_comodo/logo.png') }}" type="image/png" />
+</head>
+
+<body>
+  <aside>
+    <ul>
+      <li>
+        <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/img_comodo/home.png') }}" width="40px" height="40px" /><br />Início</a>
+      </li>
+      <li>
+        <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/lupa.png') }}" width="40px" height="40px" /><br />Procurar</a>
+      </li>
+      <li>
+        <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
+      </li>
+      <li>
+        <!--<a href="#"><img src="{{ url_for('static', filename='img/img_comodo/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a> -->
+        <div>
+          <input type="checkbox" class="checkbox" id="chk" />
+          <label class="label" for="chk">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+            <div class="ball"></div>
+          </label>
+        </div>
+      </li>
+      <li>
+        <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
+      </li>
+      <li>
+        <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/ajuda.png') }}" width="40px" height="40px" /><br />Ajuda</a>
+      </li>
+      <li>
+        <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/img_comodo/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
+      </li>
+    </ul>
+  </aside>
+
+  <main>
+    <img src="{{ url_for('static', filename='img/img_comodo/larlocker.png') }}" width="60%" /><br />
+    <h1 id="comodoTitle"></h1>
+    {% with messages = get_flashed_messages(category_filter='boas vindas') %}
+  {% if messages %}
+    <div class="flash-boas-vindas">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+    <br />
+    <table id="itemTable">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Linhas serão adicionadas dinamicamente aqui -->
+      </tbody>
+    </table>
+    <br />
+  <!--  <button onclick="showAddItemForm()">Adicionar Novo Item</button> -->
+    <button onclick="showAddItemForm()" id="adicionar-item">Adicionar Novo Item</button>
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="cancelAddItem()">&times;</span>
+        <h2>Adicionar Novo Item</h2>
+        <input type="text" id="nomeProduto" placeholder="Nome do produto" required />
+        <input type="number" id="quantidadeProduto" placeholder="Quantidade" min="0" required />
+        <br /><br />
+        <button onclick="submitNewItem()">Adicionar</button>
+      </div>
+    </div>
+  </main>
+  <script src="{{ url_for('static', filename='js/script_comodo.js') }}"></script>
+  <script src="https://kit.fontawesome.com/998c60ef77.js"   crossorigin="anonymous"></script>
+</body>
+
+</html>
+

@@ -1,24 +1,21 @@
 // Função para carregar o JSON e popular a tabela
-async function loadItems() {
+async function loadItems(idComodo) {
     try {
-        const response = await fetch('produtos.json'); // Carrega o arquivo JSON
-        const data = await response.json();
+        const response = await fetch(`/get_produtos/${idComodo}`);
+        if (!response.ok) throw new Error("Erro ao carregar os produtos");
 
-        // Exibe o nome do cômodo
-        const comodoName = data.comodo;
-        document.getElementById('comodoTitle').textContent = comodoName;
-
-        // Adiciona os produtos à tabela
+        const produtos = await response.json();
         const tableBody = document.querySelector('#itemTable tbody');
-        tableBody.innerHTML = ''; // Limpa o conteúdo existente
-
-        data.produtos.forEach(item => {
-            addRow(item.nome, item.quantidade);
+        tableBody.innerHTML = '';  // Limpa a tabela antes de popular os itens
+        produtos.forEach(produto => {
+            addRow(produto.produto, produto.qtd_produto);
         });
+
     } catch (error) {
-        console.error("Erro ao carregar os itens:", error);
+        console.error("Erro ao carregar os produtos:", error);
     }
 }
+
 
 // Função para mostrar o formulário de adição de itens
 function showAddItemForm() {
@@ -32,21 +29,40 @@ function cancelAddItem() {
     document.getElementById('modal').style.display = 'none'; // Esconde o modal
 }
 
-// Função para submeter o novo item
-function submitNewItem() {
+async function submitNewItem() {
     const nomeProduto = document.getElementById('nomeProduto').value;
     const quantidadeProduto = parseInt(document.getElementById('quantidadeProduto').value) || 0;
 
-    // Valida o nome do produto (não permite vazio)
-    if (!nomeProduto) {
-        alert("O nome do produto não pode estar vazio!");
-        return;
-    }
+    const urlParams = new URLSearchParams(window.location.search);
+    const idComodo = urlParams.get('comodo');  // Obtém o id_comodo da URL
 
-    // Adiciona o novo item à tabela
-    addRow(nomeProduto, quantidadeProduto);
-    cancelAddItem(); // Esconde o modal após a adição
+    if (nomeProduto && idComodo) {
+        try {
+            const response = await fetch('/add_produtos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: quantidadeProduto, idComodo: idComodo })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                addRow(nomeProduto, quantidadeProduto);
+                cancelAddItem(); // Esconde o modal após a adição
+                console.log(result.message); // Para depuração
+            } else {
+                console.error(result.message);
+                alert(result.message); // Exibe a mensagem de erro
+            }
+        } catch (error) {
+            console.error("Erro ao adicionar o produto:", error);
+        }
+    } else {
+        alert("Por favor, insira o nome do produto.");
+    }
 }
+
 
 // Função para adicionar uma linha na tabela
 function addRow(nome, quantidade) {
@@ -98,7 +114,28 @@ function addRow(nome, quantidade) {
     deleteButton.style.height = '20px';
     deleteButton.style.cursor = 'pointer';
     deleteButton.style.marginLeft = '10px';
-    deleteButton.onclick = () => row.remove(); // Remove a linha
+    deleteButton.onclick = async () => {
+        try {
+            const response = await fetch('/delete_produto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nomeProduto: nome })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                row.remove(); // Remove a linha da tabela
+                console.log(result.message); // Para depuração
+            } else {
+                console.error(result.message);
+                alert(result.message); // Exibe a mensagem de erro
+            }
+        } catch (error) {
+            console.error("Erro ao excluir o produto:", error);
+        }
+    };
 
     quantidadeCell.appendChild(quantityContainer);
     quantidadeCell.appendChild(deleteButton);
@@ -107,8 +144,9 @@ function addRow(nome, quantidade) {
     tableBody.appendChild(row);
 }
 
+// Função para atualizar a quantidade do item e sincronizar com o banco de dados
 // Função para atualizar a quantidade do item
-function updateQuantity(row, change) {
+async function updateQuantity(row, change) {
     const quantityText = row.querySelector('.quantity-text');
     let currentQuantity = parseInt(quantityText.textContent);
 
@@ -116,11 +154,52 @@ function updateQuantity(row, change) {
     currentQuantity = Math.max(0, currentQuantity + change);
     quantityText.textContent = currentQuantity;
 
-    // Se a quantidade for zero, remove a linha
+    const nomeProduto = row.querySelector('td').textContent;  // Assume que o nome do produto está na primeira coluna
+
     if (currentQuantity === 0) {
-        row.remove();
+        // Se a quantidade for zero, exclui o item do banco de dados
+        try {
+            const response = await fetch('/delete_produto', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nomeProduto: nomeProduto })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                row.remove(); // Remove a linha da tabela
+                console.log(result.message); // Para depuração
+            } else {
+                console.error(result.message);
+                alert(result.message); // Exibe a mensagem de erro
+            }
+        } catch (error) {
+            console.error("Erro ao excluir o produto:", error);
+        }
+    } else {
+        // Se a quantidade é maior que zero, atualiza o banco de dados com a nova quantidade
+        try {
+            const response = await fetch('/update_produtos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity })
+            });
+
+            const result = await response.json();
+            if (!response.ok) {
+                console.error(result.message);
+                alert(result.message); // Exibe a mensagem de erro
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar a quantidade do produto:", error);
+        }
     }
 }
+
 
 // Fecha o modal quando o usuário clicar fora dele
 window.onclick = function (event) {
@@ -130,5 +209,10 @@ window.onclick = function (event) {
     }
 };
 
-// Carrega os itens ao abrir a página
-window.onload = loadItems;
+window.onload = function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idComodo = urlParams.get('comodo');  // Obtém o id_comodo da URL
+    if (idComodo) {
+        loadItems(idComodo);
+    }
+};

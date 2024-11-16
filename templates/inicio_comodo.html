@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_comodo.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_inicio_comodo.css') }}" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="comodoTitle"></title>
+    <title>Inicio</title>
     <link rel="icon" href="{{ url_for('static', filename='img/img_comodo/logo.png') }}" type="image/png" />
   </head>
-
   <body>
     <aside>
       <ul>
@@ -34,35 +33,40 @@
         </li>
       </ul>
     </aside>
-
-    <main>
+    <main data-comodourl="{{ url_for('comodos') }}" data-imgpath="{{ url_for('static', filename='img/img_comodo/comodo.png') }}">
       <img src="{{ url_for('static', filename='img/img_comodo/larlocker.png') }}" width="60%" /><br />
-      <h1 id="comodoTitle"></h1>
-      <table id="itemTable">
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Quantidade</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Linhas serão adicionadas dinamicamente aqui -->
-        </tbody>
-      </table>
+      <h1>Cômodos</h1>
+      {% with messages=get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-container">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
       <br />
-      <button onclick="showAddItemForm()">Adicionar Novo Item</button>
 
-      <div id="modal" class="modal">
+      <section id="comodoContainer">
+        <!-- Os cômodos são adicionados aqui -->
+      </section>
+
+      <button onclick="showAddRoomForm()">Adicionar Cômodo</button>
+
+      <div id="modalRoom" class="modal">
         <div class="modal-content">
-          <span class="close" onclick="cancelAddItem()">&times;</span>
-          <h2>Adicionar Novo Item</h2>
-          <input type="text" id="nomeProduto" placeholder="Nome do produto" required />
-          <input type="number" id="quantidadeProduto" placeholder="Quantidade" min="0" required />
+          <span class="close" onclick="cancelAddRoom()">&times;</span>
+          <h2>Adicionar Novo Cômodo</h2>
+          <input type="text" id="nomeComodo" placeholder="Nome do cômodo" required />
           <br /><br />
-          <button onclick="submitNewItem()">Adicionar</button>
+          <button onclick="submitNewRoom()">Adicionar</button>
         </div>
       </div>
     </main>
-    <script src="{{ url_for('static', filename='js/script_comodo.js') }}"></script>
+    <script>
+      const jsonPath = "{{ url_for('static', filename='json/comodos.json') }}"
+      console.log('Caminho JSON: ', jsonPath) // Para depurar e ver a URL no console
+    </script>
+    <script src="{{ url_for('static', filename='js/script_inicio_comodo.js') }}"></script>
   </body>
 </html>

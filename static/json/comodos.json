@@ -1,0 +1,32 @@
+[
+    {
+        "comodo": "Cozinha",
+        "produtos": [
+            {
+                "nome": "Arroz",
+                "quantidade": 5
+            },
+            {
+                "nome": "Feijão",
+                "quantidade": 3
+            },
+            {
+                "nome": "Frango",
+                "quantidade": 8
+            }
+        ]
+    },
+    {
+        "comodo": "Quarto",
+        "produtos": [
+            {
+                "nome": "Travesseiro",
+                "quantidade": 5
+            },
+            {
+                "nome": "Cobertor",
+                "quantidade": 2
+            }
+        ]
+    }
+]

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="stylesheet" href="style_inicio.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Cômodos</title>
+    <link rel="icon" href="../../img/logo.png" type="image/png">
+</head>
+
+<body>
+    <aside>
+        <ul>
+            <li> <a href="../../inicio/inicio.html"> <img src="../../img/home.png" width="40px" height="40px"><br>Início</a> </li>
+            <li> <a href="../../pesquisa/pesquisa.html"> <img src="../../img/lupa.png" width="40px" height="40px"><br>Procurar</a> </li>
+            <li> <a href="inicio.html"> <img src="../../img/comodo.png" width="40px" height="40px"><br>Cômodos</a> </li>
+            <li> <a href="../../lista_compra/inicio/inicio.html"> <img src="../../img/carrinho.png" width="40px" height="40px"><br>Lista de compras</a> </li>
+            <li> <a href="#"> <img src="../../img/tema.png" width="40px" height="40px"><br>Modo claro</a> </li>
+            <li> <a href="../../conta/conta.html"> <img src="../../img/perfil.png" width="40px" height="40px"><br>Conta</a> </li>
+            <li> <a href="../../ajuda/ajuda.html"> <img src="../../img/ajuda.png" width="40px" height="40px"><br>Ajuda</a> </li>
+            <li> <a href="../../login/login.html"> <img src="../../img/sair.png" width="40px" height="40px"><br>Sair</a> </li>
+        </ul>
+    </aside>
+
+
+    <main>
+        <img src="../../img/larlocker.png" width="60%"><br>
+        <h1>Cômodos</h1>
+        <section id="comodoContainer">
+            <!-- Os cômodos são adicionados aqui -->
+        </section>
+
+        <button onclick="showAddRoomForm()">Adicionar Cômodo</button>
+
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Editar Nome do Cômodo</h2>
+                <input type="text" id="editNomeComodo" placeholder="Novo nome do cômodo" required>
+                <br><br>
+                <button onclick="submitEdit()">Salvar</button>
+            </div>
+        </div>
+        <div id="modalRoom" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cancelAddRoom()">&times;</span>
+                <h2>Adicionar Novo Cômodo</h2>
+                <input type="text" id="nomeComodo" placeholder="Nome do cômodo" required>
+                <br><br>
+                <button onclick="submitNewRoom()">Adicionar</button>
+            </div>
+        </div>
+
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>

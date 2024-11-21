@@ -1,0 +1,23 @@
+{
+    "comodo": "Cozinha",
+    "produtos": [
+        {
+            "nome": "Arroz",
+            "quantidade": 5,
+            "tipo": "Não Perecível",
+            "validade": ""
+        },
+        {
+            "nome": "Feijão",
+            "quantidade": 3,
+            "tipo": "Não Perecível",
+            "validade": ""
+        },
+        {
+            "nome": "Frango",
+            "quantidade": 8,
+            "tipo": "Perecível",
+            "validade": "2024-12-01"
+        }
+    ]
+}

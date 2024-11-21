@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="stylesheet" href="style_comodo.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="comodoTitle"></title>
+    <link rel="icon" href="../../img/logo.png" type="image/png">
+</head>
+
+<body>
+    <aside>
+        <ul>
+            <li> <a href="../../inicio/inicio.html"> <img src="../../img/home.png" width="40px" height="40px"><br>Início</a> </li>
+            <li> <a href="../../pesquisa/pesquisa.html"> <img src="../../img/lupa.png" width="40px" height="40px"><br>Procurar</a> </li>
+            <li> <a href="../inicio/inicio.html"> <img src="../../img/comodo.png" width="40px" height="40px"><br>Cômodos</a> </li>
+            <li> <a href="../../lista_compra/inicio/inicio.html"> <img src="../../img/carrinho.png" width="40px" height="40px"><br>Lista de compras</a> </li>
+            <li><div id="toggle-container">
+                <input type="checkbox"  class="checkbox" id="chk" />
+                <label class="label" for="chk">
+                  <i class="fas fa-moon"></i>
+                  <i class="fas fa-sun"></i>
+                  <div class="ball"></div>
+                </label>
+              </div> <a id="claro">Modo claro</a></li>
+            <li> <a href="../../conta/conta.html"> <img src="../../img/perfil.png" width="40px" height="40px"><br>Conta</a> </li>
+            <li> <a href="../../ajuda/ajuda.html"> <img src="../../img/ajuda.png" width="40px" height="40px"><br>Ajuda</a> </li>
+            <li> <a href="../../login/login.html"> <img src="../../img/sair.png" width="40px" height="40px"><br>Sair</a> </li>
+        </ul>
+    </aside>
+
+    <main>
+        <img src="../../img/larlocker.png" width="60%"><br>
+        <h1 id="comodoTitle"></h1>
+        <table id="itemTable">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Tipo</th>
+                    <th>Validade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão adicionadas dinamicamente aqui -->
+            </tbody>
+        </table>
+        <br>
+        <button onclick="showAddItemForm()">Adicionar Novo Item</button>
+
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cancelAddItem()">&times;</span>
+                <h2>Adicionar Novo Item</h2>
+                <label>Produto:</label>
+                <input type="text" id="nomeProduto" placeholder="Nome do produto" required> <br>
+
+                <label>Quantidade:</label>
+                <input type="number" id="quantidadeProduto" placeholder="Quantidade" min="0" required> <br>
+
+                <Label>Tipo:</Label>
+                <label for="perecivel"> <input type="checkbox" id="perecivel" onclick="toggleTipo('perecivel')"> Perecível </label>
+                <label for="naoPerecivel"> <input type="checkbox" id="naoPerecivel" onclick="toggleTipo('naoPerecivel')"> Não Perecível </label>
+
+                <br><Label>Validade:</Label>
+                <input type="date" id = validade placeholder="Validade">
+                <br><br>
+                <button onclick="submitNewItem()">Adicionar</button>
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+    <script src="https://kit.fontawesome.com/998c60ef77.js" crossorigin="anonymous"></script>
+</body>
+
+</html>

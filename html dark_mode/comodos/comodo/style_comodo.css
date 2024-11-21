@@ -1,0 +1,296 @@
+html {
+    background-color: black;
+    border: 3px solid black;
+    width: 100%;
+    height: 100%;
+    font-family: Trebuchet MS, sans-serif;
+}
+
+body {
+    margin: 0px;
+    display: flex;
+    align-items: stretch;
+    /*border: 3px solid yellow;*/
+    height: 100%;
+}
+
+aside {
+    border: 3px solid purple;
+    background-color: rgb(180, 180, 180);
+    color: black;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+ul {
+    list-style-type: none;
+    /*border: 3px solid green;*/
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: blue;
+}
+
+li {
+    margin: 10px 0px;
+    text-align: center;
+    border: 3px solid blue;
+    padding: 5px;
+    letter-spacing: 1px;
+}
+
+
+
+main {
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-left: 150px;
+    /*border: 3px solid green;*/
+    width: 100%;
+    padding: 0% 10%;
+}
+
+
+
+table {
+    border-spacing: 0;
+    width: 60%;
+    margin: 0 auto;
+    border: 5px solid purple;
+    overflow: hidden;
+    border-radius: 30px;
+}
+
+th, td{
+    border: 3px solid purple;
+    border-bottom: none;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: purple;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+}
+
+button {
+    border: none;
+    border-radius: 50px;
+    margin: 3px;
+    background-color: purple;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    width: 60%;
+}
+
+button:hover {
+    background-color: rgb(145, 0, 145);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.modal-content {
+    background-color: black;
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    transform: translate(-50%, -50%);
+    /* Move o modal para o centro */
+    padding: 20px;
+    border: 3px solid purple;
+    border-radius: 50px;
+    width: 30%;
+}
+
+/* Botão de fechar */
+.close {
+    color: purple;
+    float: right;
+    font-size: 50px;
+}
+
+.close:hover {
+    color: rgb(145, 0, 145);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#nomeProduto,
+#quantidadeProduto {
+    margin: 10px;
+    background-color: black;
+    border: 3px solid purple;
+    color: rgb(180, 180, 180);
+    border-radius: 10px;
+    padding: 5px;
+    width: 90%;
+}
+
+label, input{
+    display: flex;
+    /*border: 3px solid white;*/
+}
+
+#validade{
+    margin: 5px;
+    padding: 5px 0px 5px 10px;
+    background-color: black;
+    color: white;
+    border: 3px solid purple;
+    border-radius: 10px;
+    width: 90%;
+}
+#validade:hover{
+    border:3px solid rgb(145, 0, 145);
+    cursor: pointer;
+}
+
+
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border: 2px solid purple;
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+}
+
+input[type="checkbox"]:checked {
+    background-color: purple;
+}
+
+input[type="checkbox"]::after {
+    content: "✓";
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+
+/*Modo claro e escuro*/
+
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  
+  box-sizing: border-box;
+}
+
+#toggle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+body {
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+  margin: 0;
+  transition: background 0.2s linear;
+}
+
+body.dark {
+  background: #292c35;
+}
+
+.checkbox {
+  opacity: 0;
+  position: absolute;
+  font-size: 18px;
+}
+
+.label {
+  background-color: #111;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 5px;
+  position: relative;
+  height: 26px;
+  width: 50px;
+  transform: scale(1.5);
+  align-items: stretch;
+
+}
+
+.label .ball {
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  height: 22px;
+  width: 22px;
+  transform: translateX(0px);
+  transition: transform 0.2s linear;
+}
+
+.checkbox:checked + .label .ball {
+  transform: translateX(24px);
+}
+
+.fa-moon {
+  color: #f1c40f;
+}
+
+.fa-sun {
+  color: #f39c12;
+}
+
+#adicionar-item {
+    display: block;
+    margin: 0 auto; /* Centraliza horizontalmente */
+    text-align: center;
+}
+
+
+#adicionar-item {
+    display: block;
+    margin: 20px auto; /* Centraliza horizontalmente */
+    text-align: center;
+}
+
+#claro{
+    text-align: center;
+    justify-content: center;
+    align-items: stretch;
+}

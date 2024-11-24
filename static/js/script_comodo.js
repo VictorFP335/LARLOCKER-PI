@@ -32,14 +32,35 @@ function cancelAddItem() {
 async function submitNewItem() {
     const nomeProduto = document.getElementById('nomeProduto').value;
     const quantidadeProduto = parseInt(document.getElementById('quantidadeProduto').value) || 0;
-
-    // Captura corretamente o tipo selecionado
-    const tipo = document.querySelector('input[name="tipoProduto"]:checked')?.value || null;
-
-    const validade = document.getElementById('data_validade').value;
+    const alimento = document.getElementById('alimento').checked;
+    const objeto = document.getElementById('objeto').checked;
+    const validade = document.getElementById('validade').value;
 
     const urlParams = new URLSearchParams(window.location.search);
     const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
+
+    // Valida o nome do produto (não permite vazio)
+    if (!nomeProduto) {
+        alert("O nome do produto não pode estar vazio!");
+        return;
+    }
+
+    // Valida que apenas uma opção entre perecível e não perecível esteja marcada
+    if (!alimento && !objeto) {
+        alert("Por favor, selecione o tipo de produto (Alimento ou Objeto).");
+        return;
+    } else if (alimento && objeto) {
+        alert("Por favor, selecione apenas uma opção: Alimento ou Objeto.");
+        return;
+    }
+
+    // Se for perecível, valida que a data de validade foi preenchida
+    if (alimento && !validade) {
+        alert("Por favor, informe a validade do alimento.");
+        return;
+    }
+
+    const tipo = alimento ? "alimento" : "objeto";
 
     if (nomeProduto && idComodo) {
         try {
@@ -175,7 +196,6 @@ function formatDate(dateString) {
     return date.toLocaleDateString('pt-BR', options);
 }
 
-
 // Função para atualizar a quantidade do item e sincronizar com o banco de dados
 // Função para atualizar a quantidade do item
 async function updateQuantity(row, change) {
@@ -191,7 +211,7 @@ async function updateQuantity(row, change) {
     if (currentQuantity === 0) {
         // Se a quantidade for zero, exclui o item do banco de dados
         try {
-            const response = await fetch('/delete_produto', {
+            const response = await fetch('/m', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

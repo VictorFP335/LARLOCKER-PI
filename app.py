@@ -51,7 +51,7 @@ def cadastro():
             cursor = mysql.connection.cursor()
             cursor.execute("USE pi;")  # Força o uso do banco de dados 'pi'
             cursor.execute("SELECT DATABASE();")
-            cursor.execute("INSERT INTO users (nome_usuario, username, password_hash) VALUES (%s, %s, %s)", (fullname, email, password_hash))
+            cursor.execute("INSERT INTO cliente (nome, email, senha) VALUES (%s, %s, %s)", (fullname, email, password_hash))
             mysql.connection.commit()
             cursor.close()
             return redirect(url_for('home'))
@@ -82,11 +82,11 @@ def login():
 
             cursor = mysql.connection.cursor()
             cursor.execute("USE pi;") 
-            cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+            cursor.execute("SELECT * FROM cliente WHERE email=%s", (username,))
             user = cursor.fetchone()
             cursor.close()
 
-            if user and check_password_hash(user[-1], password):  
+            if user and check_password_hash(user[2], password):  
                 session['fullname'] = user[1]
                 session['username'] = username
                 session['id'] = user[0]
@@ -127,6 +127,26 @@ def add_comodo():
     else:
         return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
     
+@app.route('/get_ultimo_comodo', methods=['GET'])
+def get_ultimo_comodo():
+    if 'username' in session:
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")  # Seleciona o banco de dados
+            cursor.execute(f"SELECT id_comodo FROM comodo WHERE id_cliente = {session['id']} ORDER BY id_comodo DESC LIMIT 1;")
+            ultimo_comodo = cursor.fetchone()  # Retorna uma tupla ou None
+            cursor.close()
+
+            if ultimo_comodo:  # Verifica se foi encontrado algum resultado
+                return jsonify({'ultimo_id_comodo': ultimo_comodo[0]}), 200  # Retorna um dicionário simples
+            else:
+                return jsonify({'ultimo_id_comodo': 0}), 200  # Retorna 0 se não houver cômodos
+        except Exception as e:
+            print("Erro ao carregar o último cômodo do banco de dados:", e)
+            return jsonify({'status': 'error', 'message': 'Erro ao carregar cômodo.'}), 500
+
+
+        
 @app.route('/get_comodos', methods=['GET'])
 def get_comodos():
     if 'username' in session:  # Verifica se o usuário está logado
@@ -136,7 +156,6 @@ def get_comodos():
             cursor.execute(f"SELECT nome_comodo, id_comodo FROM comodo WHERE id_cliente = {session['id']}")  # Busca todos os cômodos
             comodos = cursor.fetchall()
             cursor.close()
-
             # Converte os resultados em uma lista de dicionários
             comodo_list = [{'comodo': comodo[0], 'id_comodo':comodo[1]} for comodo in comodos]
             return jsonify(comodo_list), 200
@@ -145,7 +164,29 @@ def get_comodos():
             return jsonify({'status': 'error', 'message': 'Erro ao carregar cômodos.'}), 500
     else:
         return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
-    
+
+@app.route('/delete_comodo', methods=['POST'])
+def delete_comodo():
+    if 'username' in session:  # Verifica se o usuário está autenticado
+        data = request.get_json()  # Obtém os dados enviados pelo JSON
+        nome_comodo = data.get('nomeComodo')
+
+        if nome_comodo:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")
+                # Deleta o cômodo com base no nome
+                cursor.execute("DELETE FROM comodo WHERE nome_comodo = %s", (nome_comodo,))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Cômodo excluído com sucesso.'}), 200
+            except Exception as e:
+                print("Erro ao excluir o cômodo do banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao excluir o cômodo.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'Nome do cômodo inválido.'}), 400
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
 
 @app.route('/add_produtos', methods=['POST'])
 def add_produtos():
@@ -165,12 +206,12 @@ def add_produtos():
                 # Verifica se o campo validade está vazio e ajusta a query
                 if validade:
                     cursor.execute(
-                        "INSERT INTO produto (nome_prod, qtd_prod, tipo, validade, comodo_FK) VALUES (%s, %s, %s, %s, %s)",
+                        "INSERT INTO produto (nome_produto, qtd_produto, tipo, validade, id_comodo) VALUES (%s, %s, %s, %s, %s)",
                         (nome_prod, qtd_prod, tipo, validade, id_comodo)
                     )
                 else:
                     cursor.execute(
-                        "INSERT INTO produto (nome_prod, qtd_prod, tipo, validade, comodo_FK) VALUES (%s, %s, %s, NULL, %s)",
+                        "INSERT INTO produto (nome_produto, qtd_produto, tipo, validade, id_comodo) VALUES (%s, %s, %s, NULL, %s)",
                         (nome_prod, qtd_prod, tipo, id_comodo)
                     )
 
@@ -193,7 +234,7 @@ def get_produtos(id_comodo):
         try:
             cursor = mysql.connection.cursor()
             cursor.execute("USE pi;")  # Seleciona o banco de dados
-            cursor.execute("SELECT * FROM produto WHERE comodo_FK = %s", (id_comodo,))
+            cursor.execute("SELECT * FROM produto WHERE id_comodo = %s", (id_comodo,))
             produtos = cursor.fetchall()
             cursor.close()
             prod_list = [{'produto': produto[1], 'qtd_produto': produto[2], 'tipo': produto[3], 'validade': produto[4]} for produto in produtos]
@@ -217,7 +258,7 @@ def update_produtos():
                 cursor = mysql.connection.cursor()
                 cursor.execute("USE pi;")
                 # Atualiza a quantidade de forma segura usando placeholders para os parâmetros
-                cursor.execute("UPDATE produto SET qtd_prod = %s WHERE nome_prod = %s", (qtd_prod, nome_prod))
+                cursor.execute("UPDATE produto SET qtd_produto = %s WHERE nome_produto = %s", (qtd_prod, nome_prod))
                 mysql.connection.commit()
                 cursor.close()
                 return jsonify({'status': 'success', 'message': 'Produto atualizado com sucesso.'}), 200
@@ -240,7 +281,7 @@ def delete_produto():
                 cursor = mysql.connection.cursor()
                 cursor.execute("USE pi;")
                 # Deleta o produto usando um placeholder para segurança
-                cursor.execute("DELETE FROM produto WHERE nome_prod = %s", (nome_prod,))
+                cursor.execute("DELETE FROM produto WHERE nome_produto = %s", (nome_prod,))
                 mysql.connection.commit()
                 cursor.close()
                 return jsonify({'status': 'success', 'message': 'Produto excluído com sucesso.'}), 200
@@ -268,13 +309,53 @@ def search_api():
 
             # Resultados de páginas estáticas
             static_pages = [
+                # Cômodos
                 {'name': 'Início', 'url': url_for('dashboard')},
+                {'name': 'Inicio', 'url': url_for('dashboard')},
+                {'name': 'Home', 'url': url_for('dashboard')},
                 {'name': 'Cômodos', 'url': url_for('dashboard')},
-                {'name': 'Pesquisar', 'url': url_for('search')},
                 {'name': 'Comodos', 'url': url_for('dashboard')},
-                # Adicione mais páginas aqui, se necessário
-            ]
+                {'name': 'Cômodo', 'url': url_for('dashboard')},
+                {'name': 'Comodo', 'url': url_for('dashboard')},
+                {'name': 'Adicionar comodo', 'url': url_for('dashboard')},
+                {'name': 'Adicionar cômodo', 'url': url_for('dashboard')},
+                {'name': 'Criar comodo', 'url': url_for('dashboard')},
+                {'name': 'Criar cômodo', 'url': url_for('dashboard')},
 
+                # Lista de compras
+                {'name': 'Lista de Compras', 'url': url_for('list')},
+                {'name': 'Lista de Compra', 'url': url_for('list')},
+                {'name': 'Listas de Compras', 'url': url_for('list')},
+                {'name': 'Listas de Compra', 'url': url_for('list')},
+                {'name': 'Lista', 'url': url_for('list')},
+                {'name': 'Compra', 'url': url_for('list')},
+                {'name': 'Adicionar lista de compra', 'url': url_for('lits')},
+                {'name': 'Adicionar lista de compras', 'url': url_for('list')},   
+                {'name': 'Adicionar listas de compra', 'url': url_for('lits')},
+                {'name': 'Adicionar listas de compras', 'url': url_for('list')}, 
+                {'name': 'Criar lista de compra', 'url': url_for('lits')},
+                {'name': 'Criar lista de compras', 'url': url_for('list')},   
+                {'name': 'Criar listas de compra', 'url': url_for('lits')},
+                {'name': 'Criar listas de compras', 'url': url_for('list')},
+
+                # Conta
+                {'name': 'Conta', 'url': url_for('account')},
+                {'name': 'Account', 'url': url_for('account')},
+                {'name': 'Nome', 'url': url_for('account')},
+                {'name': 'Alterar nome', 'url': url_for('account')},
+                {'name': 'Trocar nome', 'url': url_for('account')},
+                {'name': 'Email', 'url': url_for('account')},
+                {'name': 'Alterar email', 'url': url_for('account')},
+                {'name': 'Trocar email', 'url': url_for('account')},
+
+                # Ajuda
+                {'name': 'Ajuda', 'url': url_for('help')},
+                {'name': 'Help', 'url': url_for('help')},
+                {'name': 'Formulário', 'url': url_for('help')},
+                {'name': 'Formulario', 'url': url_for('help')},
+                {'name': 'Pergunta', 'url': url_for('help')},
+            ]
+            
             # Filtrar páginas que correspondem à pesquisa
             filtered_pages = [
                 {'name': page['name'], 'url': page['url'], 'type': 'página'}
@@ -289,10 +370,10 @@ def search_api():
                 FROM comodo 
                 WHERE LOWER(nome_comodo) LIKE %s AND id_cliente = %s
                 UNION ALL
-                SELECT p.comodo_FK, p.nome_prod, 'Produto' AS tipo  -- Ajuste aqui para o nome correto da coluna
+                SELECT p.id_comodo, p.nome_produto, 'Produto' AS tipo  -- Ajuste aqui para o nome correto da coluna
                 FROM produto p
-                JOIN comodo c ON p.comodo_FK = c.id_comodo  -- Aqui também, ajuste conforme necessário
-                WHERE LOWER(p.nome_prod) LIKE %s AND c.id_cliente = %s;
+                JOIN comodo c ON p.id_comodo = c.id_comodo  -- Aqui também, ajuste conforme necessário
+                WHERE LOWER(p.nome_produto) LIKE %s AND c.id_cliente = %s;
             """, (search_query, session['id'], search_query, session['id']))
             db_results = cursor.fetchall()
             cursor.close()
@@ -339,12 +420,12 @@ def get_account():
         try:
             cursor = mysql.connection.cursor()
             cursor.execute("USE pi;")  # Seleciona o banco de dados
-            cursor.execute("SELECT * FROM users WHERE id = %s", (session['id'],))
+            cursor.execute("SELECT * FROM cliente WHERE id_cliente = %s", (session['id'],))
             user = cursor.fetchone()  # Usa fetchone() para obter apenas uma linha
             cursor.close()
             
             if user:  # Verifica se a consulta retornou dados
-                user_data = {'name': user[1], 'user': user[2]}  # Ajuste os índices conforme sua tabela
+                user_data = {'name': user[1], 'user': user[-1]}  # Ajuste os índices conforme sua tabela
                 return jsonify(user_data), 200
             else:
                 return jsonify({'status': 'error', 'message': 'Usuário não encontrado.'}), 404
@@ -366,7 +447,7 @@ def update_account():
             cursor = mysql.connection.cursor()
             cursor.execute("USE pi;")
             cursor.execute(
-                'UPDATE users SET nome_usuario = %s, username = %s WHERE id = %s',
+                'UPDATE cliente SET nome = %s, email = %s WHERE id_cliente = %s',
                 (nome, username, session['id'])
             )
             mysql.connection.commit()

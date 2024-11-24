@@ -55,34 +55,33 @@
 
       <div id="editModal" class="modal">
         <div class="modal-content">
-          <span class="close" onclick="closeEditModal()">&times;</span>
-          <h2>Editar Nome do Cômodo</h2>
-          <input type="text" id="editNomeComodo" placeholder="Novo nome do cômodo" required />
-          <br /><br />
-          <button onclick="submitEdit()">Salvar</button>
+            <span class="close" onclick="closeEditModal()">&times;</span>
+            <h2>Editar Nome do Cômodo</h2>
+            <input type="text" id="editNomeComodo" placeholder="Novo nome do cômodo" required>
+            <br><br>
+            <button onclick="submitEdit()">Salvar</button>
         </div>
-      </div>
-
-      <div id="modalRoom" class="modal">
+    </div>
+    
+    <div id="modalRoom" class="modal">
         <div class="modal-content">
-          <span class="close" onclick="cancelAddRoom()">&times;</span>
-          <h2>Adicionar Novo Cômodo</h2>
-          <input type="text" id="nomeComodo" placeholder="Nome do cômodo" required />
-          <br /><br />
-          <button onclick="submitNewRoom()">Adicionar</button>
+            <span class="close" onclick="cancelAddRoom()">&times;</span>
+            <h2>Adicionar Novo Cômodo</h2>
+            <input type="text" id="nomeComodo" placeholder="Nome do cômodo" required>
+            <br><br>
+            <button onclick="submitNewRoom()">Adicionar</button>
         </div>
-      </div>
-
-      <div id="alertModal" class="aviso-modal">
+    </div>
+    
+    <div id="alertModal" class="aviso-modal">
         <div class="modal-content">
-          <span class="close" onclick="closeAlertModal()">&times;</span>
-          <h2>Aviso</h2>
-          <img src="../../img/alerta.png" width="45%" height="45%" a />
-          <p id="alertMessage"></p>
-          <button onclick="closeAlertModal()">Entendido</button>
+            <span class="close" onclick="closeAlertModal()">&times;</span>
+            <h2>Aviso</h2>
+            <img src="../../img/alerta.png" width="45%" height="45%" a>
+            <p id="alertMessage"></p>
+            <button onclick="closeAlertModal()">Entendido</button>
         </div>
-      </div>
-    </main>
+    </div>
 
     <script>
       const jsonPath = "{{ url_for('static', filename='json/comodos.json') }}"

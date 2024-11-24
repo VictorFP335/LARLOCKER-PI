@@ -1,0 +1,173 @@
+html {
+    background-color: black;
+    border: 3px solid black;
+    width: 100%;
+    height: 100%;
+    font-family: Trebuchet MS, sans-serif;
+}
+
+body {
+    margin: 0px;
+    display: flex;
+    align-items: stretch;
+    /*border: 3px solid yellow;*/
+    height: 100%;
+}
+
+aside {
+    border: 3px solid purple;
+    background-color: rgb(180, 180, 180);
+    color: black;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+ul {
+    list-style-type: none;
+    /*border: 3px solid green;*/
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+a:hover {
+    color: blue;
+}
+
+#searchResults a {
+    color: white;
+}
+
+#searchResults a:hover {
+    color: lightgray;
+}
+
+li {
+    margin: 10px 0px;
+    text-align: center;
+    /*border: 3px solid blue;*/
+    padding: 5px;
+    letter-spacing: 1px;
+}
+
+
+main {
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-left: 150px;
+    /*border: 3px solid green;*/
+    width: 100%;
+    padding: 0% 10%;
+}
+
+input {
+    border: 2px solid purple;
+    border-radius: 3px;
+    color: rgb(180, 180, 180);
+    background-color: black;
+    width: 80%;
+    padding: 10px;
+}
+
+/* Barra de pesquisa */
+.search-bar {
+    display: flex;
+    align-items: center;
+    border: 2px solid purple;
+    border-radius: 25px;
+    padding: 5px 10px;
+    margin: 20px 0;
+    background-color: black;
+    box-sizing: border-box;
+}
+
+.search-bar input {
+    width: 100%;
+    border: none;
+    outline: none;
+    color: white;
+    background-color: transparent;
+    font-size: 1em;
+}
+
+.search-bar button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Sessão de itens recentes */
+
+
+.recent-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0 0 10px;
+    cursor: pointer;
+}
+
+
+/* Botão de pesquisa principal */
+.main-search-button {
+    background-color: purple;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.2em;
+    width: 60%;
+    text-align: center;
+}
+
+.main-search-button:hover {
+    background-color: #A500A5;
+}
+
+/* Estilo do Popup */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.popup-content {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border: 3px solid purple;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: purple;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.popup-content button:hover {
+    background-color: #0056b3;
+}

@@ -11,10 +11,10 @@
     <aside>
       <ul>
         <li>
-          <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/img_comodo/home.png') }}" width="40px" height="40px" /><br />Início</a>
+          <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/img_comodo/home.png') }}" width="40px" height="40px" /><br />Comodos</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/lupa.png') }}" width="40px" height="40px" /><br />Procurar</a>
+          <a href="{{ url_for('search') }}"><img src="{{ url_for('static', filename='img/img_comodo/lupa.png') }}" width="40px" height="40px" /><br />Procurar</a>
         </li>
         <li>
           <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
@@ -23,10 +23,10 @@
           <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
+          <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/img_comodo/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/ajuda.png') }}" width="40px" height="40px" /><br />Ajuda</a>
+          <a href="{{ url_for('help') }}"><img src="{{ url_for('static', filename='img/img_comodo/ajuda.png') }}" width="40px" height="40px" /><br />Ajuda</a>
         </li>
         <li>
           <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/img_comodo/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
@@ -53,6 +53,16 @@
 
       <button onclick="showAddRoomForm()">Adicionar Cômodo</button>
 
+      <div id="editModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeEditModal()">&times;</span>
+          <h2>Editar Nome do Cômodo</h2>
+          <input type="text" id="editNomeComodo" placeholder="Novo nome do cômodo" required />
+          <br /><br />
+          <button onclick="submitEdit()">Salvar</button>
+        </div>
+      </div>
+
       <div id="modalRoom" class="modal">
         <div class="modal-content">
           <span class="close" onclick="cancelAddRoom()">&times;</span>
@@ -62,7 +72,18 @@
           <button onclick="submitNewRoom()">Adicionar</button>
         </div>
       </div>
+
+      <div id="alertModal" class="aviso-modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeAlertModal()">&times;</span>
+          <h2>Aviso</h2>
+          <img src="../../img/alerta.png" width="45%" height="45%" a />
+          <p id="alertMessage"></p>
+          <button onclick="closeAlertModal()">Entendido</button>
+        </div>
+      </div>
     </main>
+
     <script>
       const jsonPath = "{{ url_for('static', filename='json/comodos.json') }}"
       console.log('Caminho JSON: ', jsonPath) // Para depurar e ver a URL no console

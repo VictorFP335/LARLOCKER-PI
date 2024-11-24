@@ -8,7 +8,7 @@ async function loadItems(idComodo) {
         const tableBody = document.querySelector('#itemTable tbody');
         tableBody.innerHTML = '';  // Limpa a tabela antes de popular os itens
         produtos.forEach(produto => {
-            addRow(produto.produto, produto.qtd_produto);
+            addRow(produto.produto, produto.qtd_produto, produto.tipo, produto.validade);
         });
 
     } catch (error) {
@@ -33,8 +33,13 @@ async function submitNewItem() {
     const nomeProduto = document.getElementById('nomeProduto').value;
     const quantidadeProduto = parseInt(document.getElementById('quantidadeProduto').value) || 0;
 
+    // Captura corretamente o tipo selecionado
+    const tipo = document.querySelector('input[name="tipoProduto"]:checked')?.value || null;
+
+    const validade = document.getElementById('data_validade').value;
+
     const urlParams = new URLSearchParams(window.location.search);
-    const idComodo = urlParams.get('comodo');  // Obtém o id_comodo da URL
+    const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
 
     if (nomeProduto && idComodo) {
         try {
@@ -43,12 +48,18 @@ async function submitNewItem() {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: quantidadeProduto, idComodo: idComodo })
+                body: JSON.stringify({
+                    nomeProduto: nomeProduto,
+                    qtdProduto: quantidadeProduto,
+                    idComodo: idComodo,
+                    tipo: tipo,
+                    validade: validade
+                })
             });
 
             const result = await response.json();
             if (response.ok) {
-                addRow(nomeProduto, quantidadeProduto);
+                addRow(nomeProduto, quantidadeProduto, tipo, validade);
                 cancelAddItem(); // Esconde o modal após a adição
                 console.log(result.message); // Para depuração
             } else {
@@ -65,7 +76,7 @@ async function submitNewItem() {
 
 
 // Função para adicionar uma linha na tabela
-function addRow(nome, quantidade) {
+function addRow(nome, quantidade, tipo, validade) {
     const tableBody = document.querySelector('#itemTable tbody');
     const row = document.createElement('tr');
 
@@ -81,6 +92,17 @@ function addRow(nome, quantidade) {
     quantidadeCell.style.alignItems = 'center';
     quantidadeCell.style.justifyContent = 'space-between';
 
+    // Coluna de Tipo (sem alterações)
+    const tipoCell = document.createElement('td');
+    tipoCell.textContent = tipo;
+    tipoCell.className = 'tipo-col';
+
+    // Coluna de Validade com formatação
+    const validadeCell = document.createElement('td');
+    validadeCell.textContent = validade ? formatDate(validade) : 'N/A';
+    validadeCell.className = 'validade-col';
+
+    // Criar os botões de quantidade
     const quantityContainer = document.createElement('div');
     quantityContainer.style.display = 'flex';
     quantityContainer.style.alignItems = 'center';
@@ -140,9 +162,19 @@ function addRow(nome, quantidade) {
     quantidadeCell.appendChild(quantityContainer);
     quantidadeCell.appendChild(deleteButton);
     row.appendChild(quantidadeCell);
+    row.appendChild(tipoCell);
+    row.appendChild(validadeCell);
 
     tableBody.appendChild(row);
 }
+
+// Função para formatar a data
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+    return date.toLocaleDateString('pt-BR', options);
+}
+
 
 // Função para atualizar a quantidade do item e sincronizar com o banco de dados
 // Função para atualizar a quantidade do item

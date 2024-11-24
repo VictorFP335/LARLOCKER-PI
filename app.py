@@ -27,10 +27,6 @@ with app.app_context():
     except Exception as e:
         print("Erro na conexão:", e)
 
-@app.route('/test-flash')
-def test_flash():
-    flash("Mensagem de teste!", "error")
-    return redirect(url_for('home'))
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
@@ -71,30 +67,36 @@ def recuperar_senha():
 
 @app.route('/')
 def home():
-    return render_template('login.html')
+    if 'username' not in session: 
+        return render_template('inicio.html')
+    
+    else:
+        return redirect(url_for('dashboard'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form.get('email')
-        password = request.form.get('password')
+    if 'username' not in session:
+        if request.method == 'POST':
+            username = request.form.get('email')
+            password = request.form.get('password')
 
-        cursor = mysql.connection.cursor()
-        cursor.execute("USE pi;") 
-        cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
-        user = cursor.fetchone()
-        cursor.close()
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;") 
+            cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
+            user = cursor.fetchone()
+            cursor.close()
 
-        if user and check_password_hash(user[-1], password):  
-            session['fullname'] = user[1]
-            session['username'] = username
-            session['id'] = user[0]
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Usuário ou senha incorretos', 'error')
-            return render_template('login.html')  # Retorne o template com o flash
+            if user and check_password_hash(user[-1], password):  
+                session['fullname'] = user[1]
+                session['username'] = username
+                session['id'] = user[0]
+                return redirect(url_for('dashboard'))
+            else:
+                flash('Usuário ou senha incorretos', 'error')
+                return render_template('login.html')  # Retorne o template com o flash
 
-    return render_template('login.html')
+        return render_template('login.html')
+    return redirect(url_for('home'))
 
 @app.route('/comodos')
 def comodos():
@@ -151,13 +153,27 @@ def add_produtos():
         data = request.get_json()  # Obtém os dados enviados pelo JSON
         nome_prod = data.get('nomeProduto')
         qtd_prod = data.get('qtdProduto')
+        tipo = data.get('tipo')
+        validade = data.get('validade') or None  # Substitui valores vazios por None
         id_comodo = data.get('idComodo')  # Recebe o id_comodo do frontend
 
         if nome_prod and id_comodo:
             try:
                 cursor = mysql.connection.cursor()
                 cursor.execute("USE pi;")
-                cursor.execute("INSERT INTO produto (nome_prod, qtd_prod, comodo_FK) VALUES (%s, %s, %s)", (nome_prod, qtd_prod, id_comodo))
+                
+                # Verifica se o campo validade está vazio e ajusta a query
+                if validade:
+                    cursor.execute(
+                        "INSERT INTO produto (nome_prod, qtd_prod, tipo, validade, comodo_FK) VALUES (%s, %s, %s, %s, %s)",
+                        (nome_prod, qtd_prod, tipo, validade, id_comodo)
+                    )
+                else:
+                    cursor.execute(
+                        "INSERT INTO produto (nome_prod, qtd_prod, tipo, validade, comodo_FK) VALUES (%s, %s, %s, NULL, %s)",
+                        (nome_prod, qtd_prod, tipo, id_comodo)
+                    )
+
                 mysql.connection.commit()
                 cursor.close()
                 return jsonify({'status': 'success', 'message': 'Produto adicionado com sucesso!'}), 201
@@ -169,6 +185,7 @@ def add_produtos():
     else:
         return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
 
+
     
 @app.route('/get_produtos/<int:id_comodo>', methods=['GET']) 
 def get_produtos(id_comodo):
@@ -176,10 +193,10 @@ def get_produtos(id_comodo):
         try:
             cursor = mysql.connection.cursor()
             cursor.execute("USE pi;")  # Seleciona o banco de dados
-            cursor.execute("SELECT nome_prod, qtd_prod, comodo_FK FROM produto WHERE comodo_FK = %s", (id_comodo,))
+            cursor.execute("SELECT * FROM produto WHERE comodo_FK = %s", (id_comodo,))
             produtos = cursor.fetchall()
             cursor.close()
-            prod_list = [{'produto': produto[0], 'qtd_produto': produto[1]} for produto in produtos]
+            prod_list = [{'produto': produto[1], 'qtd_produto': produto[2], 'tipo': produto[3], 'validade': produto[4]} for produto in produtos]
             return jsonify(prod_list), 200
         except Exception as e:
             print("Erro ao carregar os produtos no banco de dados:", e)
@@ -235,6 +252,139 @@ def delete_produto():
     else:
         return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
 
+@app.route('/search')
+def search():
+    if 'username' in session:
+        return render_template('pesquisa.html', img_path=url_for('static', filename='img/img_comodo'))
+    else:
+        return redirect(url_for('home'))
+
+@app.route('/search_api', methods=['POST'])
+def search_api():
+    if 'username' in session:
+        try:
+            data = request.get_json()
+            search_query = f"%{data.get('searchTerm', '').lower()}%"  # Obtém o termo de busca
+
+            # Resultados de páginas estáticas
+            static_pages = [
+                {'name': 'Início', 'url': url_for('dashboard')},
+                {'name': 'Cômodos', 'url': url_for('dashboard')},
+                {'name': 'Pesquisar', 'url': url_for('search')},
+                {'name': 'Comodos', 'url': url_for('dashboard')},
+                # Adicione mais páginas aqui, se necessário
+            ]
+
+            # Filtrar páginas que correspondem à pesquisa
+            filtered_pages = [
+                {'name': page['name'], 'url': page['url'], 'type': 'página'}
+                for page in static_pages if search_query.strip('%') in page['name'].lower()
+            ]
+
+            # Buscar dados dinâmicos do banco de dados
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")
+            cursor.execute(""" 
+                SELECT id_comodo, nome_comodo, 'Cômodo' AS tipo 
+                FROM comodo 
+                WHERE LOWER(nome_comodo) LIKE %s AND id_cliente = %s
+                UNION ALL
+                SELECT p.comodo_FK, p.nome_prod, 'Produto' AS tipo  -- Ajuste aqui para o nome correto da coluna
+                FROM produto p
+                JOIN comodo c ON p.comodo_FK = c.id_comodo  -- Aqui também, ajuste conforme necessário
+                WHERE LOWER(p.nome_prod) LIKE %s AND c.id_cliente = %s;
+            """, (search_query, session['id'], search_query, session['id']))
+            db_results = cursor.fetchall()
+            cursor.close()
+
+            # Processar resultados do banco de dados
+            dynamic_results = [
+                {'name': result[1], 'url': url_for('comodos', comodo=result[0]), 'type': result[2]} for result in db_results
+            ]
+
+            # Mesclar resultados dinâmicos e estáticos
+            results = filtered_pages + dynamic_results
+
+            # Armazenar resultados recentes na sessão
+            if 'recentes' not in session:
+                session['recentes'] = []
+
+            # Limitar o número de resultados recentes para, por exemplo, 5
+            max_recent_results = 5
+            session['recentes'] = results[:max_recent_results] + session['recentes']
+
+            # Manter apenas os últimos "max_recent_results" resultados
+            session['recentes'] = session['recentes'][:max_recent_results]
+
+            # Salvar a sessão
+            session.modified = True
+
+            return jsonify({'status': 'success', 'results': results, 'recentes': session['recentes']}), 200
+        except Exception as e:
+            print("Erro ao buscar dados:", e)
+            return jsonify({'status': 'error', 'message': 'Erro ao buscar dados.'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+
+@app.route('/account')
+def account():
+    if 'username' in session:
+        return render_template('conta.html', img_path=url_for('static', filename='img/img_conta'))
+    else:
+        return redirect(url_for('home'))
+
+@app.route('/get_account', methods=['GET'])
+def get_account():
+    if 'username' in session:
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")  # Seleciona o banco de dados
+            cursor.execute("SELECT * FROM users WHERE id = %s", (session['id'],))
+            user = cursor.fetchone()  # Usa fetchone() para obter apenas uma linha
+            cursor.close()
+            
+            if user:  # Verifica se a consulta retornou dados
+                user_data = {'name': user[1], 'user': user[2]}  # Ajuste os índices conforme sua tabela
+                return jsonify(user_data), 200
+            else:
+                return jsonify({'status': 'error', 'message': 'Usuário não encontrado.'}), 404
+        except Exception as e:
+            print('Erro ao carregar o usuário: ', e)
+            return jsonify({'status': 'error', 'message': 'Erro interno do servidor.'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+
+    
+@app.route('/update_account', methods=['POST'])
+def update_account():
+    if 'username' in session:
+        data = request.get_json()
+        nome = data.get('nome')
+        username = data.get('user')
+
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")
+            cursor.execute(
+                'UPDATE users SET nome_usuario = %s, username = %s WHERE id = %s',
+                (nome, username, session['id'])
+            )
+            mysql.connection.commit()
+            cursor.close()
+            return jsonify({'status': 'success', 'message': 'Dados atualizados com sucesso.'}), 200
+        except Exception as e:
+            print("Erro ao atualizar os dados do usuário: ", e)
+            return jsonify({'status': 'error', 'message': 'Erro ao atualizar os dados do usuário.'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+
+    
+@app.route('/help')
+def help():
+    if 'username' in session:
+        return render_template('ajuda.html', img_path=url_for('static', filename='img/img_conta'))
+    else:
+        return redirect(url_for('home'))
 
 @app.route('/dashboard')
 def dashboard():

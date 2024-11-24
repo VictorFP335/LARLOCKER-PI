@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ajuda</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/ajuda.css') }}" />
+    <link rel="icon" href="{{ url_for('static', filename='img/img_comodo/logo.png') }}" type="image/png" />
+  </head>
+
+  <body>
+    <aside>
+      <ul>
+        <li>
+          <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/img_comodo/home.png') }}" width="40px" height="40px" /><br />Comodos</a>
+        </li>
+        <li>
+          <a href="{{ url_for('search') }}"><img src="{{ url_for('static', filename='img/img_comodo/lupa.png') }}" width="40px" height="40px" /><br />Procurar</a>
+        </li>
+        <li>
+          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
+        </li>
+        <li>
+          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
+        </li>
+        <li>
+          <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/img_comodo/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
+        </li>
+        <li>
+          <a href="{{ url_for('help') }}"><img src="{{ url_for('static', filename='img/img_comodo/ajuda.png') }}" width="40px" height="40px" /><br />Ajuda</a>
+        </li>
+        <li>
+          <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/img_comodo/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main>
+      <div class="container">
+        <!-- Logo -->
+        <img src="{{ url_for('static', filename='img/img_comodo/larlocker.png') }}" class="logo" width="60%" /><br />
+
+        <!-- FAQ Container -->
+        <div class="faq-container">
+          <h1>FAQ - Perguntas Frequentes</h1>
+
+          <!-- Pergunta 1 -->
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+              <h3>Quem somos?</h3>
+              <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Nossa equipe de desenvolvedores conta com 4 alunos graduando pelo curso de ciência de dados e inteligência artificial da PUC Campinas: Edson, Gabriel, Victor e Yan.</p>
+            </div>
+          </div>
+
+          <!-- Pergunta 2 -->
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+              <h3>Como funciona o FAQ?</h3>
+              <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Você pode clicar nas perguntas para ver ou ocultar as respostas das perguntas mais frequentes. Ou use nossas caixas de formulário abaixo para enviar suas dúvidas ou reclamações direto à nossa equipe.</p>
+            </div>
+          </div>
+
+          <!-- Pergunta 3 -->
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+              <h3>Qual o objetivo deste site?</h3>
+              <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>Este site tem por objetivo auxiliar empresas de pequeno e médio porte, assim como em domicílios, com o manejo, armazenamento e empréstimos de diversos recursos.</p>
+            </div>
+          </div>
+
+          <!-- Formulário de Contato -->
+          <div class="contact-form">
+            <h2>Envie sua Pergunta ao Suporte</h2>
+            <form>
+              <label for="name">Nome:</label>
+              <input type="text" id="name" name="name" placeholder="Seu nome" required />
+
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" placeholder="Seu email" required />
+
+              <label for="message">Mensagem:</label>
+              <textarea id="message" name="message" placeholder="Sua mensagem ao suporte" required></textarea>
+
+              <button type="submit">Enviar Pergunta</button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <script src="{{ url_for('static', filename='js/ajuda.js') }}"></script>
+    </main>
+  </body>
+</html>

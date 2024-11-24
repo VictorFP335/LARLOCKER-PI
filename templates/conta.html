@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_conta.css') }}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conta</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/img_comodo/logo.png') }}" type="image/png" />
+  </head>
+
+  <body>
+    <aside>
+      <ul>
+        <li>
+          <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/img_comodo/home.png') }}" width="40px" height="40px" /><br />Comodos</a>
+        </li>
+        <li>
+          <a href="{{ url_for('search') }}"><img src="{{ url_for('static', filename='img/img_comodo/lupa.png') }}" width="40px" height="40px" /><br />Procurar</a>
+        </li>
+        <li>
+          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
+        </li>
+        <li>
+          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
+        </li>
+        <li>
+          <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/img_comodo/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
+        </li>
+        <li>
+          <a href="{{ url_for('help') }}"><img src="{{ url_for('static', filename='img/img_comodo/ajuda.png') }}" width="40px" height="40px" /><br />Ajuda</a>
+        </li>
+        <li>
+          <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/img_comodo/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
+        </li>
+      </ul>
+    </aside>
+
+    <main>
+      <img src="{{ url_for('static', filename='img/img_comodo/larlocker.png') }}" width="60%" /><br />
+      <h1>Conta</h1>
+      <div class="user-info">
+        <img src="{{ url_for('static', filename='img/img_conta/perfil.png') }}" alt="User Avatar" class="avatar" width="150px" height="150px" />
+      </div>
+      <div class="profile-container">
+        <label for="userName">Nome:</label>
+        <input type="text" id="userName" placeholder="Nome do Usuário" />
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Email" />
+        <br />
+        <button onclick="saveChanges()">Salvar Alterações</button>
+      </div>
+    </main>
+    <script src="{{ url_for('static', filename='js/script_conta.js') }}"></script>
+  </body>
+</html>

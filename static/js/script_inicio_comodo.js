@@ -1,7 +1,8 @@
+let currentEditCard = null;
+
 document.addEventListener("DOMContentLoaded", function () {
     const mainElement = document.querySelector("main");
     const comodoUrl = mainElement.getAttribute("data-comodourl");
-    const imgPath = mainElement.getAttribute("data-imgpath");
 
     async function loadComodos() {
         try {
@@ -19,6 +20,49 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Função para adicionar o cartão do cômodo ao contêiner
+    function addRoomCard(nomeComodo) {
+        const comodoContainer = document.getElementById("comodoContainer");
+
+        // Cria o elemento do cartão
+        const card = document.createElement("div");
+        card.className = "comodo-card";
+
+        // Adiciona a imagem do cômodo e o nome
+        card.innerHTML = `
+        <img src="../../img/comodo_temp.png" alt="Imagem do cômodo" width="80%" height="80%">
+        <h2 class="comodo-nome">${nomeComodo}</h2>
+        <span class="menu-dots" onclick="toggleMenuOptions(this)">⋮</span>
+        <div class="menu-options" style="display: none;">
+            <button onclick="editRoom(this)">Editar</button>
+            <button onclick="deleteRoom(this)">Apagar</button>
+        </div>
+    `;
+
+        comodoContainer.appendChild(card);
+    }
+
+    function checkValidade(produtos) {
+        const hoje = new Date();
+        const mensagens = [];
+
+        produtos.forEach(produto => {
+            if (produto.validade) {
+                const validade = new Date(produto.validade);
+                const diasRestantes = Math.ceil((validade - hoje) / (1000 * 60 * 60 * 24));
+
+                if (diasRestantes < 0) {
+                    mensagens.push(`<p>O produto <strong>${produto.nome}</strong>está vencido (Validade: <strong>${produto.validade}</strong>)</p>`);
+                } else if (diasRestantes <= 7) {
+                    mensagens.push(`<p>O produto <strong>${produto.nome}</strong> está próximo ao vencimento. <br> (Validade: <strong>${produto.validade}</strong>)</p>`);
+                }
+            }
+        });
+
+        if (mensagens.length > 0) {
+            showAlert(mensagens.join('')); // Mescla os parágrafos sem separadores extras
+        }
+    }
 
     function showAddRoomForm() {
         document.getElementById("modalRoom").style.display = "block";
@@ -65,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         card.innerHTML = `
             <a href="${comodoUrl}?comodo=${idComodo}">
-                <img src="${imgPath}" alt="Imagem do cômodo" width="70%" height="90%">
+                <img src="../../img/comodo_temp.png" alt="Imagem do cômodo" width="70%" height="90%">
             </a>
             <h2>${nomeComodo}</h2>
         `;

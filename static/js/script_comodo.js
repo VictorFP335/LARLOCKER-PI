@@ -98,6 +98,9 @@ async function submitNewItem() {
 
 // Função para adicionar uma linha na tabela
 function addRow(nome, quantidade, tipo, validade) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
+
     const tableBody = document.querySelector('#itemTable tbody');
     const row = document.createElement('tr');
 
@@ -164,7 +167,7 @@ function addRow(nome, quantidade, tipo, validade) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nome })
+                body: JSON.stringify({ nomeProduto: nome, idComodo: idComodo })
             });
 
             const result = await response.json();
@@ -202,6 +205,9 @@ async function updateQuantity(row, change) {
     const quantityText = row.querySelector('.quantity-text');
     let currentQuantity = parseInt(quantityText.textContent);
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
+
     // Atualiza a quantidade e evita valores negativos
     currentQuantity = Math.max(0, currentQuantity + change);
     quantityText.textContent = currentQuantity;
@@ -216,7 +222,7 @@ async function updateQuantity(row, change) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto })
+                body: JSON.stringify({ nomeProduto: nomeProduto, idComodo: idComodo})
             });
 
             const result = await response.json();
@@ -238,7 +244,7 @@ async function updateQuantity(row, change) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity })
+                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity, idComodo:idComodo })
             });
 
             const result = await response.json();

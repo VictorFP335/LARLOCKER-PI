@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         card.className = "comodo-card";
 
         card.innerHTML = `
-            <a href="${comodoUrl}?comodo=${idComodo}">
+            <a class="id-comodo" href="${comodoUrl}?comodo=${idComodo}">
                 <img src="static/img/img/comodo_temp.png" alt="Imagem do cômodo" width="90%" height="80%">
             </a>
             <h2 class="comodo-nome" id="nome_comodo">${nomeComodo}</h2>
@@ -77,19 +77,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const nomeComodo = document.getElementById("nomeComodo").value;
         if (nomeComodo) {
             try {
-                // Faz a requisição para obter o último cômodo
-                const response1 = await fetch('/get_ultimo_comodo');
-                if (!response1.ok) throw new Error("Erro ao carregar os cômodos");
-    
-                const ultimoComodo = await response1.json();
-                let id_comodo;
-    
-                // Lógica para definir o próximo id do cômodo
-                if (ultimoComodo.ultimo_id_comodo === null) {
-                    id_comodo = 1; // Primeiro cômodo
-                } else {
-                    id_comodo = ultimoComodo.ultimo_id_comodo + 1; // Incrementa o ID
-                }
     
                 // Faz a requisição para adicionar o novo cômodo
                 const response = await fetch('/add_comodo', {
@@ -102,6 +89,13 @@ document.addEventListener("DOMContentLoaded", function () {
     
                 const result = await response.json();
                 if (response.ok) {
+                        // Faz a requisição para obter o último cômodo
+                    const response1 = await fetch('/get_ultimo_comodo');
+                    if (!response1.ok) throw new Error("Erro ao carregar os cômodos");
+        
+                    const ultimoComodo = await response1.json();
+                    let id_comodo = ultimoComodo.ultimo_id_comodo;
+        
                     addRoomCard(nomeComodo, id_comodo);  // Atualiza a interface com o novo cômodo
                     cancelAddRoom();  // Fecha o modal corretamente
                     console.log(result.message); // Para depuração
@@ -124,12 +118,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
     async function deleteRoom(button) {
         const card = button.closest('.comodo-card'); // Seleciona o cartão pai
-        const nome = card.querySelector('.comodo-nome').textContent.trim(); // Obtém o nome do cômodo do cartão
-    
-        if (!nome) {
-            alert("Erro: Nome do cômodo não encontrado.");
-            return;
-        }
+        const idLink = card.querySelector('.id-comodo'); // Seleciona o link que contém o ID
+        const idComodo = new URL(idLink.href).searchParams.get('comodo'); // Extrai o ID do parâmetro "comodo" na URL
     
         try {
             const response = await fetch('/delete_comodo', {
@@ -137,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeComodo: nome }) // Envia o nome correto
+                body: JSON.stringify({ idComodo: parseInt(idComodo) }) // Envia o ID do cômodo para o servidor
             });
     
             const result = await response.json();
@@ -149,10 +139,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 alert(result.message); // Exibe a mensagem de erro
             }
         } catch (error) {
-            console.error("Erro ao excluir o cômodo:", error);
+            console.error("Erro ao excluir o cômodo, verifique se não há produtos dentro do cômodo antes de excluir: ", error);
         }
     }
-
+    
     // Função para abrir o modal de edição
     function openEditModal(card) {
         currentEditCard = card;
@@ -168,15 +158,37 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Função para salvar a edição do nome do cômodo
-    function submitEdit() {
+    async function submitEdit() {
         const newName = document.getElementById('editNomeComodo').value;
-        if (newName && currentEditCard) {
-            const nameElement = currentEditCard.querySelector('.comodo-nome');
-            nameElement.textContent = newName; // Atualiza o nome no cartão
-            closeEditModal(); // Fecha o modal após salvar
-        } else {
-            alert("Por favor, insira o novo nome do cômodo.");
+        const idLink = currentEditCard.querySelector('.id-comodo'); // Seleciona o link que contém o ID
+        const idComodo = new URL(idLink.href).searchParams.get('comodo'); // Extrai o ID do parâmetro "comodo" na URL
+        try {
+            const response = await fetch('/update_comodo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ idComodo: parseInt(idComodo), nomeComodo: newName }) // Envia o ID do cômodo para o servidor
+            });
+    
+            const result = await response.json();
+            if (response.ok) {
+                if (newName && currentEditCard) {
+            
+                    const nameElement = currentEditCard.querySelector('.comodo-nome');
+                    nameElement.textContent = newName; // Atualiza o nome no cartão
+                    closeEditModal(); // Fecha o modal após salvar
+                } else {
+                    alert("Por favor, insira o novo nome do cômodo.");
+                }
+            } else {
+                console.error(result.message);
+                alert(result.message); // Exibe a mensagem de erro
+            }
+        } catch (error) {
+            console.error("Erro ao excluir o cômodo, verifique se não há produtos dentro do cômodo antes de excluir: ", error);
         }
+
     }
 
     document.getElementById("comodoContainer").addEventListener("click", function (event) {
@@ -209,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
             submitEdit();
         }
     });
-    
+
     
     loadComodos();
 

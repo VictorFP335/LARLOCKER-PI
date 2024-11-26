@@ -21,9 +21,7 @@ function cadastrar() {
 
 // Função para logar
 function login() {
-    const usuario = document.getElementById('loginUsuario').value;
-    const senha = document.getElementById('loginSenha').value;
-
+     
     const senhaArmazenada = localStorage.getItem(usuario);
 
     if (senhaArmazenada === senha) {

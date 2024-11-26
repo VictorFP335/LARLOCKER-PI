@@ -169,22 +169,45 @@ def get_comodos():
 def delete_comodo():
     if 'username' in session:  # Verifica se o usuário está autenticado
         data = request.get_json()  # Obtém os dados enviados pelo JSON
-        nome_comodo = data.get('nomeComodo')
+        id_comodo = data.get('idComodo')
 
-        if nome_comodo:
+        if id_comodo:
             try:
                 cursor = mysql.connection.cursor()
                 cursor.execute("USE pi;")
                 # Deleta o cômodo com base no nome
-                cursor.execute("DELETE FROM comodo WHERE nome_comodo = %s", (nome_comodo,))
+                cursor.execute("DELETE FROM comodo WHERE id_comodo = %s", (id_comodo,))
                 mysql.connection.commit()
                 cursor.close()
                 return jsonify({'status': 'success', 'message': 'Cômodo excluído com sucesso.'}), 200
             except Exception as e:
                 print("Erro ao excluir o cômodo do banco de dados:", e)
-                return jsonify({'status': 'error', 'message': 'Erro ao excluir o cômodo.'}), 500
+                return jsonify({'status': 'error', 'message': 'Erro ao excluir o cômodo, verifique se não há produtos dentro do cômodo antes de excluí-lo.'}), 500
         else:
             return jsonify({'status': 'error', 'message': 'Nome do cômodo inválido.'}), 400
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+    
+@app.route('/update_comodo', methods=['POST'])
+def update_comodo():
+    if 'username' in session:
+        data = request.get_json()
+        id_comodo = data.get('idComodo')
+        nome_comodo = data.get('nomeComodo')
+        if id_comodo is not None and nome_comodo is not None:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")
+                # Atualiza a quantidade de forma segura usando placeholders para os parâmetros
+                cursor.execute("UPDATE comodo SET nome_comodo = %s WHERE id_comodo = %s", (nome_comodo, id_comodo))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Dados atualizados com sucesso.'}), 200
+            except Exception as e:
+                print("Erro ao editar o cômodo no banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao editar o cômodo.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'id_como ou nome_comodo faltando'}), 500
     else:
         return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
 
@@ -252,13 +275,14 @@ def update_produtos():
         data = request.get_json()  # Obtém os dados enviados pelo JSON
         nome_prod = data.get('nomeProduto')
         qtd_prod = data.get('qtdProduto')
+        id_comodo = data.get('idComodo')
 
         if nome_prod is not None and qtd_prod is not None:
             try:
                 cursor = mysql.connection.cursor()
                 cursor.execute("USE pi;")
                 # Atualiza a quantidade de forma segura usando placeholders para os parâmetros
-                cursor.execute("UPDATE produto SET qtd_produto = %s WHERE nome_produto = %s", (qtd_prod, nome_prod))
+                cursor.execute("UPDATE produto SET qtd_produto = %s WHERE nome_produto = %s and id_comodo = %s", (qtd_prod, nome_prod, id_comodo))
                 mysql.connection.commit()
                 cursor.close()
                 return jsonify({'status': 'success', 'message': 'Produto atualizado com sucesso.'}), 200
@@ -275,13 +299,13 @@ def delete_produto():
     if 'username' in session:
         data = request.get_json()  # Obtém os dados enviados pelo JSON
         nome_prod = data.get('nomeProduto')
-
+        id_comodo = data.get('idComodo')
         if nome_prod:
             try:
                 cursor = mysql.connection.cursor()
                 cursor.execute("USE pi;")
                 # Deleta o produto usando um placeholder para segurança
-                cursor.execute("DELETE FROM produto WHERE nome_produto = %s", (nome_prod,))
+                cursor.execute("DELETE FROM produto WHERE nome_produto = %s AND id_comodo = %s", (nome_prod, id_comodo,))
                 mysql.connection.commit()
                 cursor.close()
                 return jsonify({'status': 'success', 'message': 'Produto excluído com sucesso.'}), 200

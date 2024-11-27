@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_conta.css') }}" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Conta</title>
+
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_lista.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de compras</title>
     <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png" />
   </head>
 
@@ -36,21 +37,34 @@
     </aside>
 
     <main>
-      <img src="{{ url_for('static', filename='img/larlocker.png') }}" width="60%" /><br />
-      <h1>Conta</h1>
-      <div class="user-info">
-        <img src="{{ url_for('static', filename='img/perfil.png') }}" alt="User Avatar" class="avatar" width="150px" height="150px" />
-      </div>
-      <div class="profile-container">
-        <label for="userName">Nome:</label>
-        <input type="text" id="userName" placeholder="Nome do Usuário" />
+        <img src="{{ url_for('static', filename='img/larlocker.png') }}" width="60%"><br>
+        <h1 id="comodoTitle"></h1>
+        <table id="itemTable">
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Linhas serão adicionadas dinamicamente aqui -->
+            </tbody>
+        </table>
+        <br>
+        <button onclick="showAddItemForm()">Adicionar Novo Item</button>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" placeholder="Email" />
-        <br />
-        <button onclick="saveChanges()">Salvar Alterações</button>
-      </div>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="cancelAddItem()">&times;</span>
+                <h2>Adicionar Novo Item</h2>
+                <input type="text" id="nomeProduto" placeholder="Nome do produto" required>
+                <input type="number" id="quantidadeProduto" placeholder="Quantidade" min="0" required>
+                <br><br>
+                <button onclick="submitNewItem()">Adicionar</button>
+            </div>
+        </div>
     </main>
-    <script src="{{ url_for('static', filename='js/script_conta.js') }}"></script>
-  </body>
+    <script src="{{ url_for('static', filename='js/script_lista.js') }}"></script>
+</body>
+
 </html>

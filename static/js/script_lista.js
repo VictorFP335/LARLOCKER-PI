@@ -1,21 +1,20 @@
 // Função para carregar o JSON e popular a tabela
-async function loadItems(idComodo) {
+async function loadItems(idLista) {
     try {
-        const response = await fetch(`/get_produtos/${idComodo}`);
-        if (!response.ok) throw new Error("Erro ao carregar os produtos");
+        const response = await fetch(`/get_itens/${idLista}`);
+        if (!response.ok) throw new Error("Erro ao carregar os itens");
 
-        const produtos = await response.json();
+        const itens = await response.json();
         const tableBody = document.querySelector('#itemTable tbody');
         tableBody.innerHTML = '';  // Limpa a tabela antes de popular os itens
-        produtos.forEach(produto => {
-            addRow(produto.produto, produto.qtd_produto, produto.tipo, produto.validade);
+        itens.forEach(item => {
+            addRow(item.nome, item.qtd_item);
         });
 
     } catch (error) {
-        console.error("Erro ao carregar os produtos:", error);
+        console.error("Erro ao carregar os itens:", error);
     }
 }
-
 
 // Função para mostrar o formulário de adição de itens
 function showAddItemForm() {
@@ -24,20 +23,19 @@ function showAddItemForm() {
     document.getElementById('quantidadeProduto').value = ''; // Limpa o campo de quantidade
 }
 
+
 // Função para cancelar a adição de um novo item
 function cancelAddItem() {
     document.getElementById('modal').style.display = 'none'; // Esconde o modal
 }
 
+
 async function submitNewItem() {
     const nomeProduto = document.getElementById('nomeProduto').value;
     const quantidadeProduto = parseInt(document.getElementById('quantidadeProduto').value) || 0;
-    const alimento = document.getElementById('alimento').checked;
-    const objeto = document.getElementById('objeto').checked;
-    const validade = document.getElementById('validade').value;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
+    const idLista = urlParams.get('lista'); // Obtém o id_lista da URL
 
     // Valida o nome do produto (não permite vazio)
     if (!nomeProduto) {
@@ -45,26 +43,13 @@ async function submitNewItem() {
         return;
     }
 
-    // Valida que apenas uma opção entre perecível e não perecível esteja marcada
-    if (!alimento && !objeto) {
-        alert("Por favor, selecione o tipo de produto (Alimento ou Objeto).");
-        return;
-    } else if (alimento && objeto) {
-        alert("Por favor, selecione apenas uma opção: Alimento ou Objeto.");
-        return;
+    if(quantidadeProduto < 0){
+        alert("Defina um valor válido para a quantidade de produtos!")
     }
 
-    // Se for perecível, valida que a data de validade foi preenchida
-    if (alimento && !validade) {
-        alert("Por favor, informe a validade do alimento.");
-        return;
-    }
-
-    const tipo = alimento ? "alimento" : "objeto";
-
-    if (nomeProduto && idComodo) {
+    if (nomeProduto && idLista && quantidadeProduto) {
         try {
-            const response = await fetch('/add_produtos', {
+            const response = await fetch('/add_item', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -72,15 +57,13 @@ async function submitNewItem() {
                 body: JSON.stringify({
                     nomeProduto: nomeProduto,
                     qtdProduto: quantidadeProduto,
-                    idComodo: idComodo,
-                    tipo: tipo,
-                    validade: validade
+                    idLista: idLista
                 })
             });
 
             const result = await response.json();
             if (response.ok) {
-                addRow(nomeProduto, quantidadeProduto, tipo, validade);
+                addRow(nomeProduto, quantidadeProduto);
                 cancelAddItem(); // Esconde o modal após a adição
                 console.log(result.message); // Para depuração
             } else {
@@ -88,18 +71,17 @@ async function submitNewItem() {
                 alert(result.message); // Exibe a mensagem de erro
             }
         } catch (error) {
-            console.error("Erro ao adicionar o produto:", error);
+            console.error("Erro ao adicionar o item:", error);
         }
     } else {
-        alert("Por favor, insira o nome do produto.");
+        alert("Por favor, insira o nome do item.");
     }
 }
 
-
 // Função para adicionar uma linha na tabela
-function addRow(nome, quantidade, tipo, validade) {
+function addRow(nome, quantidade) {
     const urlParams = new URLSearchParams(window.location.search);
-    const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
+    const idLista = urlParams.get('lista'); // Obtém o id_comodo da URL
 
     const tableBody = document.querySelector('#itemTable tbody');
     const row = document.createElement('tr');
@@ -115,16 +97,6 @@ function addRow(nome, quantidade, tipo, validade) {
     quantidadeCell.style.display = 'flex';
     quantidadeCell.style.alignItems = 'center';
     quantidadeCell.style.justifyContent = 'space-between';
-
-    // Coluna de Tipo (sem alterações)
-    const tipoCell = document.createElement('td');
-    tipoCell.textContent = tipo;
-    tipoCell.className = 'tipo-col';
-
-    // Coluna de Validade com formatação
-    const validadeCell = document.createElement('td');
-    validadeCell.textContent = validade ? formatDate(validade) : 'en-US';
-    validadeCell.className = 'validade-col';
 
     // Criar os botões de quantidade
     const quantityContainer = document.createElement('div');
@@ -162,12 +134,12 @@ function addRow(nome, quantidade, tipo, validade) {
     deleteButton.style.marginLeft = '10px';
     deleteButton.onclick = async () => {
         try {
-            const response = await fetch('/delete_produto', {
+            const response = await fetch('/delete_item', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nome, idComodo: idComodo })
+                body: JSON.stringify({ nomeProduto: nome, idLista: idLista })
             });
 
             const result = await response.json();
@@ -179,33 +151,24 @@ function addRow(nome, quantidade, tipo, validade) {
                 alert(result.message); // Exibe a mensagem de erro
             }
         } catch (error) {
-            console.error("Erro ao excluir o produto:", error);
+            console.error("Erro ao excluir o item:", error);
         }
     };
 
     quantidadeCell.appendChild(quantityContainer);
     quantidadeCell.appendChild(deleteButton);
     row.appendChild(quantidadeCell);
-    row.appendChild(tipoCell);
-    row.appendChild(validadeCell);
-
     tableBody.appendChild(row);
 }
 
-// Função para formatar a data
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    return date.toLocaleDateString('pt-BR', options);
-}
 
-// Função para atualizar a quantidade do item e sincronizar com o banco de dados
+// Função para atualizar a quantidade do item
 async function updateQuantity(row, change) {
     const quantityText = row.querySelector('.quantity-text');
     let currentQuantity = parseInt(quantityText.textContent);
 
     const urlParams = new URLSearchParams(window.location.search);
-    const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
+    const idLista = urlParams.get('lista'); // Obtém o id_comodo da URL
 
     // Atualiza a quantidade e evita valores negativos
     currentQuantity = Math.max(0, currentQuantity + change);
@@ -214,14 +177,13 @@ async function updateQuantity(row, change) {
     const nomeProduto = row.querySelector('td').textContent;  // Assume que o nome do produto está na primeira coluna
 
     if (currentQuantity === 0) {
-        // Se a quantidade for zero, exclui o item do banco de dados
         try {
-            const response = await fetch('/m', {
+            const response = await fetch('/delete_item', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, idComodo: idComodo})
+                body: JSON.stringify({ nomeProduto: nomeProduto, idLista: idLista})
             });
 
             const result = await response.json();
@@ -233,17 +195,17 @@ async function updateQuantity(row, change) {
                 alert(result.message); // Exibe a mensagem de erro
             }
         } catch (error) {
-            console.error("Erro ao excluir o produto:", error);
+            console.error("Erro ao excluir o item:", error);
         }
     } else {
         // Se a quantidade é maior que zero, atualiza o banco de dados com a nova quantidade
         try {
-            const response = await fetch('/update_produtos', {
+            const response = await fetch('/update_itens', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity, idComodo:idComodo })
+                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity, idLista:idLista})
             });
 
             const result = await response.json();
@@ -252,11 +214,10 @@ async function updateQuantity(row, change) {
                 alert(result.message); // Exibe a mensagem de erro
             }
         } catch (error) {
-            console.error("Erro ao atualizar a quantidade do produto:", error);
+            console.error("Erro ao atualizar a quantidade do item:", error);
         }
     }
 }
-
 
 // Fecha o modal quando o usuário clicar fora dele
 window.onclick = function (event) {
@@ -268,8 +229,8 @@ window.onclick = function (event) {
 
 window.onload = function () {
     const urlParams = new URLSearchParams(window.location.search);
-    const idComodo = urlParams.get('comodo');  // Obtém o id_comodo da URL
-    if (idComodo) {
-        loadItems(idComodo);
+    const idLista = urlParams.get('lista');  // Obtém o id_comodo da URL
+    if (idLista) {
+        loadItems(idLista);
     }
 };

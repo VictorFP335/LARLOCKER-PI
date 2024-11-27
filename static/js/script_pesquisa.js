@@ -18,7 +18,7 @@ function displayRecentSearches() {
     recentSearches.forEach(term => {
         const recentItem = document.createElement("div");
         recentItem.className = "recent-item";
-        recentItem.innerHTML = `<img src="static/img/img_comodo/recente.png" width="20px"> <span>${term}</span>`;
+        recentItem.innerHTML = `<img src="static/img/recente.png" width="20px"> <span>${term}</span>`;
 
         // Adiciona um evento de clique para realizar a pesquisa
         recentItem.addEventListener("click", () => {

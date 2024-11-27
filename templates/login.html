@@ -6,11 +6,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="icon" href="{{ url_for('static', filename='img/login/logo.png') }}" type="image/png" />
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png" />
     <title>Login - Larlocker</title>
   </head>
   <body>
-    <img src="{{ url_for('static', filename='img/login/larlocker.png') }}" alt="Logo" />
+    <img src="{{ url_for('static', filename='img/larlocker.png') }}" alt="Logo" />
 
     {% with messages=get_flashed_messages(with_categories=true) %}
       {% if messages %}

@@ -210,7 +210,232 @@ def update_comodo():
             return jsonify({'status': 'error', 'message': 'id_como ou nome_comodo faltando'}), 500
     else:
         return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+    
+@app.route('/alert', methods=['GET'])
+def alert():
+    if 'username' in session:
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")  # Seleciona o banco de dados
+            cursor.execute(f"SELECT c.nome_comodo, p.nome_produto, DATE(p.validade) AS validade, DATE(NOW()) AS data_atual FROM comodo c JOIN produto p ON c.id_comodo = p.id_comodo WHERE c.id_cliente = {session['id']} and DATEDIFF(NOW(), p.validade) <= 7")  # Busca todos os cômodos
+            produtos = cursor.fetchall()
+            cursor.close()
+            # Converte os resultados em uma lista de dicionários
+            produto_list = [{'comodo': produto[0], 'nome': produto[1], 'validade': produto[2], 'data_atual':produto[3]} for produto in produtos]
+            return jsonify(produto_list), 200
+        except Exception as e:
+            print("Erro ao carregar os produtos que estão próximos da validade no banco de dados:", e)
+            return jsonify({'status': 'error', 'message': 'Erro ao carregar produtos próximos ao vencimento.'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
 
+@app.route('/listas')
+def listas():
+    if 'username' in session:
+        return render_template('lista.html')
+    else:
+        return redirect(url_for('home'))
+
+@app.route('/list')
+def list():
+    if 'username' in session:
+        return render_template('inicio_lista.html')
+    else:
+        return redirect(url_for('home'))
+
+@app.route('/get_lista', methods=['GET'])
+def get_lista():
+    if 'username' in session:  # Verifica se o usuário está logado
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")  # Seleciona o banco de dados
+            cursor.execute(f"SELECT nome_lista, id_lista FROM lista_compra WHERE id_cliente = {session['id']}")  # Busca todos os cômodos
+            listas = cursor.fetchall()
+            cursor.close()
+            # Converte os resultados em uma lista de dicionários
+            lists = [{'lista': lista[0], 'id_lista': lista[1]} for lista in listas]
+            return jsonify(lists), 200
+        except Exception as e:
+            print("Erro ao carregar as listas do banco de dados:", e)
+            return jsonify({'status': 'error', 'message': 'Erro ao carregar listas.'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+
+@app.route('/add_lista', methods=['POST'])
+def add_lista():
+    if 'username' in session:  # Verifica se o usuário está logado
+        data = request.get_json()  # Obtém os dados JSON do pedido
+        nome_lista = data.get('nomeLista')
+
+        if nome_lista:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")  # Seleciona o banco de dados
+                cursor.execute("INSERT INTO lista_compra (nome_lista, id_cliente) VALUES (%s, %s)", (nome_lista,session['id'],))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Lista adicionada com sucesso!'}), 201
+            except Exception as e:
+                print("Erro ao inserir a lista no banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao adicionar a lista.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'Nome da lista não pode estar vazio.'}), 400
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+    
+@app.route('/update_lista', methods=['POST'])
+def update_lista():
+    if 'username' in session:
+        data = request.get_json()
+        id_lista = data.get('idLista')
+        nome_lista = data.get('nomeLista')
+        if id_lista is not None and nome_lista is not None:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")
+                # Atualiza a quantidade de forma segura usando placeholders para os parâmetros
+                cursor.execute("UPDATE lista_compra SET nome_lista = %s WHERE id_lista = %s", (nome_lista, id_lista))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Dados atualizados com sucesso.'}), 200
+            except Exception as e:
+                print("Erro ao editar a lista no banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao editar a lista.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'id_lista ou nome_lista faltando'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+    
+@app.route('/delete_lista', methods=['POST'])
+def delete_lista():
+    if 'username' in session:  # Verifica se o usuário está autenticado
+        data = request.get_json()  # Obtém os dados enviados pelo JSON
+        id_lista = data.get('idLista')
+
+        if id_lista:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")
+                cursor.execute("DELETE FROM lista_compra WHERE id_lista = %s", (id_lista,))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Lista excluído com sucesso.'}), 200
+            except Exception as e:
+                print("Erro ao excluir a lista do banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao excluir a lista, verifique se não há produtos dentro da lista antes de excluí-la.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'Nome da lista inválido.'}), 400
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+    
+@app.route('/get_ultima_lista', methods=['GET'])
+def get_ultimo_lista():
+    if 'username' in session:
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")  # Seleciona o banco de dados
+            cursor.execute(f"SELECT id_lista FROM lista_compra WHERE id_cliente = {session['id']} ORDER BY id_lista DESC LIMIT 1;")
+            ultima_lista = cursor.fetchone()  # Retorna uma tupla ou None
+            cursor.close()
+
+            if ultima_lista:  # Verifica se foi encontrado algum resultado
+                return jsonify({'ultimo_id_lista': ultima_lista[0]}), 200  # Retorna um dicionário simples
+            else:
+                return jsonify({'ultimo_id_lista': 0}), 200  # Retorna 0 se não houver cômodos
+        except Exception as e:
+            print("Erro ao carregar a última lista do banco de dados:", e)
+            return jsonify({'status': 'error', 'message': 'Erro ao carregar a lista.'}), 500
+
+@app.route('/get_itens/<int:id_lista>', methods=['GET']) 
+def get_itens(id_lista):
+    if 'username' in session:
+        try:
+            cursor = mysql.connection.cursor()
+            cursor.execute("USE pi;")  # Seleciona o banco de dados
+            cursor.execute("SELECT nome_item, qtd_compra FROM item WHERE id_lista = %s", (id_lista,))
+            items = cursor.fetchall()
+            cursor.close()
+            item_list = [{'nome': item[0], 'qtd_item': item[1]} for item in items]
+            return jsonify(item_list), 200
+        except Exception as e:
+            print("Erro ao carregar os itens no banco de dados:", e)
+            return jsonify({'status': 'error', 'message': 'Erro ao carregar os itens.'}), 500
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+
+
+@app.route('/add_item', methods=['POST'])
+def add_item():
+    if 'username' in session:
+        data = request.get_json()  # Obtém os dados enviados pelo JSON
+        nome_prod = data.get('nomeProduto')
+        qtd_prod = data.get('qtdProduto')
+        id_lista = data.get('idLista')  # Recebe o id_comodo do frontend
+
+        if nome_prod and id_lista:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")
+                cursor.execute("INSERT INTO item (qtd_compra, nome_item, id_lista) VALUES (%s, %s, %s)",( qtd_prod, nome_prod,id_lista))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Item adicionado com sucesso!'}), 201
+            except Exception as e:
+                print("Erro ao inserir o item no banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao adicionar o item.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'Dados inválidos.'}), 400
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+
+@app.route('/update_itens', methods=['POST'])
+def update_itens():
+    if 'username' in session:
+        data = request.get_json()  # Obtém os dados enviados pelo JSON
+        nome_prod = data.get('nomeProduto')
+        qtd_prod = data.get('qtdProduto')
+        id_lista = data.get('idLista')
+
+        if nome_prod is not None and qtd_prod is not None:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")
+                # Atualiza a quantidade de forma segura usando placeholders para os parâmetros
+                cursor.execute("UPDATE item SET qtd_compra = %s WHERE nome_item = %s and id_lista = %s", (qtd_prod, nome_prod, id_lista))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Item atualizado com sucesso.'}), 200
+            except Exception as e:
+                print("Erro ao alterar o item no banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao alterar o item.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'Dados inválidos.'}), 400
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+
+@app.route('/delete_item', methods=['POST'])
+def delete_item():
+    if 'username' in session:
+        data = request.get_json()  # Obtém os dados enviados pelo JSON
+        nome_prod = data.get('nomeProduto')
+        id_lista = data.get('idLista')
+        if nome_prod:
+            try:
+                cursor = mysql.connection.cursor()
+                cursor.execute("USE pi;")
+                # Deleta o produto usando um placeholder para segurança
+                cursor.execute("DELETE FROM item WHERE nome_item = %s AND id_lista = %s", (nome_prod, id_lista,))
+                mysql.connection.commit()
+                cursor.close()
+                return jsonify({'status': 'success', 'message': 'Item excluído com sucesso.'}), 200
+            except Exception as e:
+                print("Erro ao excluir o item do banco de dados:", e)
+                return jsonify({'status': 'error', 'message': 'Erro ao excluir o item.'}), 500
+        else:
+            return jsonify({'status': 'error', 'message': 'Nome do item inválido.'}), 400
+    else:
+        return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
+    
 @app.route('/add_produtos', methods=['POST'])
 def add_produtos():
     if 'username' in session:

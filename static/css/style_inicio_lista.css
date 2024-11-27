@@ -61,7 +61,7 @@ main {
     padding: 0% 10%;
 }
 
-#comodoContainer {
+#listaContainer {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -69,7 +69,7 @@ main {
     justify-items: center;
 }
 
-.comodo-card {
+.lista-card {
     background-color: purple;
     color: black;
     border: 2px solid purple;
@@ -119,7 +119,7 @@ main {
 }
 
 .menu-options button:hover {
-    background-color: rgb(145, 0, 145);
+    background-color: rgb(145, 0, 145);;
 }
 
 button {
@@ -170,7 +170,7 @@ button:hover {
     cursor: pointer;
 }
 
-#nomeComodo, #editNomeComodo {
+#nomeLista, #editNomeLista {
     width: 80%;
     padding: 10px;
     margin: 10px;
@@ -216,51 +216,3 @@ button:hover {
     color: rgb(145, 0, 145);
 }
 
-
-
-.aviso-modal {
-    display: none; /* Começa oculto */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.5);
-}
-
-.aviso-modal .modal-content {
-    background-color: rgb(145, 0, 0);
-    border: 3px solid black;
-    border-radius: 10px;
-    text-align: center;
-    padding: 20px;
-    width: 40%;
-    color: white;
-}
-
-.aviso-modal .modal-content .close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 25px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-}
-
-.aviso-modal .modal-content button {
-    background-color: purple;
-    color: white;
-    border: 3px solid purple;
-    padding: 10px 20px;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-.aviso-modal .modal-content button:hover {
-    background-color: rgb(145, 0, 145); 
-    border: 3px solid rgb(145, 0, 145);
-}

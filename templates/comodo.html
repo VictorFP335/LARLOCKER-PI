@@ -5,38 +5,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title id="comodoTitle"></title>
-    <link rel="icon" href="{{ url_for('static', filename='img/img_comodo/logo.png') }}" type="image/png" />
+    <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png" />
   </head>
 
   <body>
     <aside>
       <ul>
         <li>
-          <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/img_comodo/home.png') }}" width="40px" height="40px" /><br />Comodos</a>
+          <a href="{{ url_for('home') }}"><img src="{{ url_for('static', filename='img/home.png') }}" width="40px" height="40px" /><br />Comodos</a>
         </li>
         <li>
-          <a href="{{ url_for('search') }}"><img src="{{ url_for('static', filename='img/img_comodo/lupa.png') }}" width="40px" height="40px" /><br />Procurar</a>
+          <a href="{{ url_for('search') }}"><img src="{{ url_for('static', filename='img/lupa.png') }}" width="40px" height="40px" /><br />Procurar</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
+          <a href="{{ url_for('list') }}"><img src="{{ url_for('static', filename='img/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/img_comodo/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
+          <a href="#"><img src="{{ url_for('static', filename='img/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
         </li>
         <li>
-          <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/img_comodo/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
+          <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
         </li>
         <li>
-          <a href="{{url_for('help')}}"><img src="{{ url_for('static', filename='img/img_comodo/ajuda.png') }}" width="40px" height="40px" /><br />Ajuda</a>
+          <a href="{{ url_for('help') }}"><img src="{{ url_for('static', filename='img/ajuda.png') }}" width="40px" height="40px" /><br />Ajuda</a>
         </li>
         <li>
-          <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/img_comodo/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
+          <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
         </li>
       </ul>
     </aside>
 
     <main>
-      <img src="{{ url_for('static', filename='img/img_comodo/larlocker.png') }}" width="60%" /><br />
+      <img src="{{ url_for('static', filename='img/larlocker.png') }}" width="60%" /><br />
       <h1 id="comodoTitle"></h1>
       <table id="itemTable">
         <thead>

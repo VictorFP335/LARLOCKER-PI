@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
             comodos.forEach(comodo => {
                 addRoomCard(comodo.comodo, comodo.id_comodo);
             });
+            checkValidade();
         } catch (error) {
             console.error("Erro ao carregar os cômodos:", error);
         }
@@ -32,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         card.innerHTML = `
             <a class="id-comodo" href="${comodoUrl}?comodo=${idComodo}">
-                <img src="static/img/img/comodo_temp.png" alt="Imagem do cômodo" width="90%" height="80%">
+                <img src="static/img/comodo_temp.png" alt="Imagem do cômodo" width="90%" height="80%">
             </a>
             <h2 class="comodo-nome" id="nome_comodo">${nomeComodo}</h2>
             <span class="menu-dots" onclick="toggleMenuOptions(this)">⋮</span>
@@ -47,27 +48,53 @@ document.addEventListener("DOMContentLoaded", function () {
 
     
 
-    function checkValidade(produtos) {
-        const hoje = new Date();
-        const mensagens = [];
-
-        produtos.forEach(produto => {
-            if (produto.validade) {
+    async function checkValidade() {
+        try {
+            const response = await fetch('/alert');
+            if (!response.ok) throw new Error("Erro ao carregar os produtos próximos da validade");
+    
+            const produtos = await response.json();
+            console.log("Produtos retornados:", produtos); // Verifique o retorno da API
+    
+            const mensagens = [];
+    
+            produtos.forEach(produto => {
+                const hoje = new Date(produto.data_atual);
                 const validade = new Date(produto.validade);
+                const validadeFormatada = validade.toLocaleDateString("pt-BR");
                 const diasRestantes = Math.ceil((validade - hoje) / (1000 * 60 * 60 * 24));
-
+    
                 if (diasRestantes < 0) {
-                    mensagens.push(`<p>O produto <strong>${produto.nome}</strong>está vencido (Validade: <strong>${produto.validade}</strong>)</p>`);
+                    mensagens.push(`<p>O produto <strong>${produto.nome}</strong> está vencido. <br> (Validade: <strong>${validadeFormatada}</strong> Cômodo: <strong>${produto.comodo}</strong>)</p>`);
                 } else if (diasRestantes <= 7) {
-                    mensagens.push(`<p>O produto <strong>${produto.nome}</strong> está próximo ao vencimento. <br> (Validade: <strong>${produto.validade}</strong>)</p>`);
+                    mensagens.push(`<p>O produto <strong>${produto.nome}</strong> está próximo ao vencimento. <br> (Validade: <strong>${validadeFormatada}</strong> Cômodo: <strong>${produto.comodo}</strong>)</p>`);
                 }
+            });
+    
+            console.log("Mensagens:", mensagens); // Verifique se mensagens foram adicionadas
+    
+            if (mensagens.length > 0) {
+                showAlert(mensagens.join('')); // Mostra o modal
             }
-        });
-
-        if (mensagens.length > 0) {
-            showAlert(mensagens.join('')); // Mescla os parágrafos sem separadores extras
+        } catch (error) {
+            console.error("Erro ao carregar os cômodos:", error);
         }
     }
+    
+
+    function showAlert(message) {
+        const alertMessageElement = document.getElementById("alertMessage");
+        alertMessageElement.innerHTML = message;
+    
+        const alertModal = document.getElementById("alertModal");
+        alertModal.style.display = "flex"; // Exibe o modal
+    }
+    
+    function closeAlertModal() {
+        const alertModal = document.getElementById("alertModal");
+        alertModal.style.display = "none"; // Oculta o modal
+    }
+    
 
     function showAddRoomForm() {
         document.getElementById("modalRoom").style.display = "block";
@@ -225,7 +252,21 @@ document.addEventListener("DOMContentLoaded", function () {
     
     loadComodos();
 
-    // Exponha as funções ao escopo global para serem acessíveis pelo botão do HTML
+    document.addEventListener("DOMContentLoaded", () => {
+        checkValidade();
+    });
+
+    document.getElementById("alertModal").addEventListener("click", function (event) {
+        if (event.target.textContent === "Entendido") {
+            closeAlertModal();
+        }
+
+        if (event.target.classList.contains("close")) {
+            closeAlertModal();
+        }
+
+    });
+    
     window.showAddRoomForm = showAddRoomForm;
     window.cancelAddRoom = cancelAddRoom;
     window.submitNewRoom = submitNewRoom;

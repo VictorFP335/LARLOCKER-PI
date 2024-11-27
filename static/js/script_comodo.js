@@ -22,6 +22,7 @@ function showAddItemForm() {
     document.getElementById('modal').style.display = 'block'; // Exibe o modal
     document.getElementById('nomeProduto').value = ''; // Limpa o campo de nome
     document.getElementById('quantidadeProduto').value = ''; // Limpa o campo de quantidade
+    document.getElementById('validade').value = '';
 }
 
 // Função para cancelar a adição de um novo item
@@ -39,9 +40,19 @@ async function submitNewItem() {
     const urlParams = new URLSearchParams(window.location.search);
     const idComodo = urlParams.get('comodo'); // Obtém o id_comodo da URL
 
+    const dataValidade = new Date(validade)
+    const dataValidadeFormatada = dataValidade.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+
+    const dataAtual = new Date();
+    const dataAtualFormatada = dataAtual.toLocaleDateString('pt-BR', { timeZone: 'UTC' })
     // Valida o nome do produto (não permite vazio)
     if (!nomeProduto) {
         alert("O nome do produto não pode estar vazio!");
+        return;
+    }
+
+    if (dataValidade <= dataAtual) {
+        alert("Digite uma data válida!")
         return;
     }
 
@@ -123,7 +134,8 @@ function addRow(nome, quantidade, tipo, validade) {
 
     // Coluna de Validade com formatação
     const validadeCell = document.createElement('td');
-    validadeCell.textContent = validade ? formatDate(validade) : 'en-US';
+    const dataValidade = new Date(validade)
+    validadeCell.textContent = dataValidade.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
     validadeCell.className = 'validade-col';
 
     // Criar os botões de quantidade
@@ -221,7 +233,7 @@ async function updateQuantity(row, change) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, idComodo: idComodo})
+                body: JSON.stringify({ nomeProduto: nomeProduto, idComodo: idComodo })
             });
 
             const result = await response.json();
@@ -243,7 +255,7 @@ async function updateQuantity(row, change) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity, idComodo:idComodo })
+                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity, idComodo: idComodo })
             });
 
             const result = await response.json();

@@ -56,25 +56,24 @@
 
       <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="cancelAddItem()">&times;</span>
-            <h2>Adicionar Novo Item</h2>
-            <label>Produto:</label>
-            <input type="text" id="nomeProduto" placeholder="Nome do produto" required> <br>
+          <span class="close" onclick="cancelAddItem()">&times;</span>
+          <h2>Adicionar Novo Item</h2>
+          <label>Produto:</label>
+          <input type="text" id="nomeProduto" placeholder="Nome do produto" required /> <br />
 
-            <label>Quantidade:</label>
-            <input type="number" id="quantidadeProduto" placeholder="Quantidade" min="0" required> <br>
+          <label>Quantidade:</label>
+          <input type="number" id="quantidadeProduto" placeholder="Quantidade" min="0" required /> <br />
 
-            <Label>Tipo:</Label>
-            <label for="alimento"> <input type="checkbox" id="alimento" onclick="toggleTipo('alimento')"> Alimento </label>
-            <label for="objeto"> <input type="checkbox" id="objeto" onclick="toggleTipo('objeto')"> Objeto </label>
+          <Label>Tipo:</Label>
+          <label for="alimento"><input type="checkbox" id="alimento" onclick="toggleTipo('alimento')" />Alimento</label>
+          <label for="objeto"><input type="checkbox" id="objeto" onclick="toggleTipo('objeto')" />Objeto</label>
 
-            <br><Label>Validade:</Label>
-            <input type="date" id = validade placeholder="Validade">
-            <br><br>
-            <button onclick="submitNewItem()">Adicionar</button>
+          <br /><Label>Validade:</Label>
+          <input type="date" id="validade" placeholder="Validade" />
+          <br /><br />
+          <button onclick="submitNewItem()">Adicionar</button>
         </div>
-    </div>
-
+      </div>
     </main>
     <script src="{{ url_for('static', filename='js/script_comodo.js') }}"></script>
   </body>

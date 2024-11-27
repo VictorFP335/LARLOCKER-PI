@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("modalRoom").style.display = "none";
         document.getElementById("nomeComodo").value = "";
     }
-    
+
     function addRoomCard(nomeComodo, idComodo) {
         const comodoContainer = document.getElementById("comodoContainer");
         const card = document.createElement("div");
@@ -46,33 +46,32 @@ document.addEventListener("DOMContentLoaded", function () {
         comodoContainer.appendChild(card);
     }
 
-    
+
 
     async function checkValidade() {
         try {
             const response = await fetch('/alert');
             if (!response.ok) throw new Error("Erro ao carregar os produtos próximos da validade");
-    
+
             const produtos = await response.json();
             console.log("Produtos retornados:", produtos); // Verifique o retorno da API
-    
+
             const mensagens = [];
-    
+
             produtos.forEach(produto => {
                 const hoje = new Date(produto.data_atual);
                 const validade = new Date(produto.validade);
-                const validadeFormatada = validade.toLocaleDateString("pt-BR");
+                const validadeFormatada = validade.toLocaleDateString("pt-BR", { timeZone: 'UTC' });
                 const diasRestantes = Math.ceil((validade - hoje) / (1000 * 60 * 60 * 24));
-    
                 if (diasRestantes < 0) {
                     mensagens.push(`<p>O produto <strong>${produto.nome}</strong> está vencido. <br> (Validade: <strong>${validadeFormatada}</strong> Cômodo: <strong>${produto.comodo}</strong>)</p>`);
                 } else if (diasRestantes <= 7) {
                     mensagens.push(`<p>O produto <strong>${produto.nome}</strong> está próximo ao vencimento. <br> (Validade: <strong>${validadeFormatada}</strong> Cômodo: <strong>${produto.comodo}</strong>)</p>`);
                 }
             });
-    
+
             console.log("Mensagens:", mensagens); // Verifique se mensagens foram adicionadas
-    
+
             if (mensagens.length > 0) {
                 showAlert(mensagens.join('')); // Mostra o modal
             }
@@ -80,21 +79,21 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Erro ao carregar os cômodos:", error);
         }
     }
-    
+
 
     function showAlert(message) {
         const alertMessageElement = document.getElementById("alertMessage");
         alertMessageElement.innerHTML = message;
-    
+
         const alertModal = document.getElementById("alertModal");
         alertModal.style.display = "flex"; // Exibe o modal
     }
-    
+
     function closeAlertModal() {
         const alertModal = document.getElementById("alertModal");
         alertModal.style.display = "none"; // Oculta o modal
     }
-    
+
 
     function showAddRoomForm() {
         document.getElementById("modalRoom").style.display = "block";
@@ -104,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const nomeComodo = document.getElementById("nomeComodo").value;
         if (nomeComodo) {
             try {
-    
+
                 // Faz a requisição para adicionar o novo cômodo
                 const response = await fetch('/add_comodo', {
                     method: 'POST',
@@ -113,16 +112,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                     body: JSON.stringify({ nomeComodo: nomeComodo })
                 });
-    
+
                 const result = await response.json();
                 if (response.ok) {
-                        // Faz a requisição para obter o último cômodo
+                    // Faz a requisição para obter o último cômodo
                     const response1 = await fetch('/get_ultimo_comodo');
                     if (!response1.ok) throw new Error("Erro ao carregar os cômodos");
-        
+
                     const ultimoComodo = await response1.json();
                     let id_comodo = ultimoComodo.ultimo_id_comodo;
-        
+
                     addRoomCard(nomeComodo, id_comodo);  // Atualiza a interface com o novo cômodo
                     cancelAddRoom();  // Fecha o modal corretamente
                     console.log(result.message); // Para depuração
@@ -137,17 +136,17 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Por favor, insira o nome do cômodo.");
         }
     }
-    
+
     function cancelAddRoom() {
         document.getElementById("modalRoom").style.display = "none"; // Fecha o modal
         document.getElementById("nomeComodo").value = ""; // Limpa o campo
     }
-    
+
     async function deleteRoom(button) {
         const card = button.closest('.comodo-card'); // Seleciona o cartão pai
         const idLink = card.querySelector('.id-comodo'); // Seleciona o link que contém o ID
         const idComodo = new URL(idLink.href).searchParams.get('comodo'); // Extrai o ID do parâmetro "comodo" na URL
-    
+
         try {
             const response = await fetch('/delete_comodo', {
                 method: 'POST',
@@ -156,7 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({ idComodo: parseInt(idComodo) }) // Envia o ID do cômodo para o servidor
             });
-    
+
             const result = await response.json();
             if (response.ok) {
                 card.remove(); // Remove o cartão da interface
@@ -169,7 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Erro ao excluir o cômodo, verifique se não há produtos dentro do cômodo antes de excluir: ", error);
         }
     }
-    
+
     // Função para abrir o modal de edição
     function openEditModal(card) {
         currentEditCard = card;
@@ -197,11 +196,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({ idComodo: parseInt(idComodo), nomeComodo: newName }) // Envia o ID do cômodo para o servidor
             });
-    
+
             const result = await response.json();
             if (response.ok) {
                 if (newName && currentEditCard) {
-            
+
                     const nameElement = currentEditCard.querySelector('.comodo-nome');
                     nameElement.textContent = newName; // Atualiza o nome no cartão
                     closeEditModal(); // Fecha o modal após salvar
@@ -224,14 +223,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const menu = event.target.nextElementSibling;
             menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "flex" : "none";
         }
-    
+
         if (event.target.textContent === "Editar") {
             // Executa a função de editar
             const card = event.target.closest(".comodo-card");
             openEditModal(card);
         }
 
-    
+
         if (event.target.textContent === "Apagar") {
             // Executa a função de apagar
             const card = event.target.closest(".comodo-card");
@@ -249,7 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    
+
     loadComodos();
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -266,7 +265,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
     });
-    
+
     window.showAddRoomForm = showAddRoomForm;
     window.cancelAddRoom = cancelAddRoom;
     window.submitNewRoom = submitNewRoom;

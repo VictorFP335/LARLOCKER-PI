@@ -44,17 +44,19 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
 
         comodoContainer.appendChild(card);
+
     }
 
     function showAddRoomForm() {
-            document.getElementById("modalRoom").style.display = "block";
+        document.getElementById("nomeLista").value = "";
+        document.getElementById("modalRoom").style.display = "block";
     }
 
     async function submitNewRoom() {
         const nomeLista = document.getElementById("nomeLista").value;
         if (nomeLista) {
             try {
-    
+
                 // Faz a requisição para adicionar o novo cômodo
                 const response = await fetch('/add_lista', {
                     method: 'POST',
@@ -63,16 +65,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     },
                     body: JSON.stringify({ nomeLista: nomeLista })
                 });
-    
+
                 const result = await response.json();
                 if (response.ok) {
                     const response1 = await fetch('/get_ultima_lista');
                     if (!response1.ok) throw new Error("Erro ao carregar as listas");
-        
+
                     const ultimaLista = await response1.json();
                     let id_lista = ultimaLista.ultimo_id_lista;
-        
-                    addRoomCard(nomeLista, id_lista );  // Atualiza a interface com o novo cômodo
+
+                    addRoomCard(nomeLista, id_lista);  // Atualiza a interface com o novo cômodo
                     cancelAddRoom();  // Fecha o modal corretamente
                     console.log(result.message); // Para depuração
                 } else {
@@ -95,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
     async function deleteRoom(button) {
         const card = button.closest('.lista-card'); // Seleciona o cartão pai
         const idLink = card.querySelector('.id-lista'); // Seleciona o link que contém o ID
-        const idLista= new URL(idLink.href).searchParams.get('lista'); // Extrai o ID do parâmetro "comodo" na URL
-    
+        const idLista = new URL(idLink.href).searchParams.get('lista'); // Extrai o ID do parâmetro "comodo" na URL
+
         try {
             const response = await fetch('/delete_lista', {
                 method: 'POST',
@@ -105,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({ idLista: parseInt(idLista) }) // Envia o ID do cômodo para o servidor
             });
-    
+
             const result = await response.json();
             if (response.ok) {
                 card.remove(); // Remove o cartão da interface
@@ -145,11 +147,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({ idLista: parseInt(idLista), nomeLista: newName }) // Envia o ID do cômodo para o servidor
             });
-    
+
             const result = await response.json();
             if (response.ok) {
                 if (newName && currentEditCard) {
-            
+
                     const nameElement = currentEditCard.querySelector('.lista-nome');
                     nameElement.textContent = newName; // Atualiza o nome no cartão
                     closeEditModal(); // Fecha o modal após salvar
@@ -172,14 +174,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const menu = event.target.nextElementSibling;
             menu.style.display = menu.style.display === "none" || menu.style.display === "" ? "flex" : "none";
         }
-    
+
         if (event.target.textContent === "Editar") {
             // Executa a função de editar
             const card = event.target.closest(".lista-card");
             openEditModal(card);
         }
 
-    
+
         if (event.target.textContent === "Apagar") {
             // Executa a função de apagar
             const card = event.target.closest(".lista-card");
@@ -196,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function () {
             submitEdit();
         }
     });
-    
+
     loadListas();
 
     window.showAddRoomForm = showAddRoomForm;

@@ -482,10 +482,10 @@ def get_produtos(id_comodo):
         try:
             cursor = mysql.connection.cursor()
             cursor.execute("USE pi;")  # Seleciona o banco de dados
-            cursor.execute("SELECT * FROM produto WHERE id_comodo = %s", (id_comodo,))
+            cursor.execute("SELECT nome_produto, qtd_produto, tipo, DATE(validade) as data_validade FROM produto WHERE id_comodo = %s", (id_comodo,))
             produtos = cursor.fetchall()
             cursor.close()
-            prod_list = [{'produto': produto[1], 'qtd_produto': produto[2], 'tipo': produto[3], 'validade': produto[4]} for produto in produtos]
+            prod_list = [{'produto': produto[0], 'qtd_produto': produto[1], 'tipo': produto[2], 'validade': produto[3]} for produto in produtos]
             return jsonify(prod_list), 200
         except Exception as e:
             print("Erro ao carregar os produtos no banco de dados:", e)

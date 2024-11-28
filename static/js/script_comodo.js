@@ -71,7 +71,7 @@ async function submitNewItem() {
         return;
     }
 
-    const tipo = alimento ? "alimento" : "objeto";
+    const tipo = alimento ? "Alimento" : "Objeto";
 
     if (nomeProduto && idComodo) {
         try {
@@ -134,8 +134,8 @@ function addRow(nome, quantidade, tipo, validade) {
 
     // Coluna de Validade com formatação
     const validadeCell = document.createElement('td');
-    const dataValidade = new Date(validade)
-    validadeCell.textContent = dataValidade.toLocaleDateString('pt-BR', { timeZone: 'UTC' });
+    const dataValidade = validade ? new Date(validade) : null;
+    validadeCell.textContent = dataValidade ? dataValidade.toLocaleDateString('pt-BR', { timeZone: 'UTC' }) : 'N/A';
     validadeCell.className = 'validade-col';
 
     // Criar os botões de quantidade
@@ -200,6 +200,7 @@ function addRow(nome, quantidade, tipo, validade) {
     row.appendChild(quantidadeCell);
     row.appendChild(tipoCell);
     row.appendChild(validadeCell);
+
 
     tableBody.appendChild(row);
 }
@@ -268,7 +269,14 @@ async function updateQuantity(row, change) {
         }
     }
 }
+/* Modo Claro/Escuro */
+const chk = document.getElementById('chk')
 
+chk.addEventListener('change', () => {
+    document.body.classList.toggle('white');
+    const imagem = document.getElementById('imagem');
+    imagem.setAttribute('src', "static/img/larlocker_branco.png")
+})
 
 // Fecha o modal quando o usuário clicar fora dele
 window.onclick = function (event) {

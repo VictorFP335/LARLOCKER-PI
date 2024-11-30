@@ -48,7 +48,7 @@ li {
     margin: 10px 0px;
     text-align: center;
     /*border: 3px solid blue;*/
-    padding: 5px;
+    padding: 0px 25%;
     letter-spacing: 1px;
 }
 
@@ -211,7 +211,12 @@ input[type="checkbox"]::after {
     margin: 20px auto;
 }
 
-
+.temas {
+  position: fixed;  /* Fixa o elemento na tela */
+  top: 10px;        /* Distância do topo */
+  right: 10px;      /* Distância da direita */
+  z-index: 999;     /* Garante que o switch fique acima de outros elementos */
+}
 
 /* Modo claro - Aplicado a todos os descendentes do body com a classe .white */
 body.white {
@@ -238,6 +243,10 @@ body.white a:hover {
     color: blue;
 }
 
+body.white .ball{
+    background-color:black;
+}
+
 /* Outras transições */
 body,
 main,
@@ -246,50 +255,36 @@ button {
     transition: background-color 0.3s linear, color 0.3s linear;
 }
 
-
-.checkbox {
-    opacity: 0;
-    position: absolute;
-    font-size: 18px;
-}
-
+/* Estilo da bolinha */
 .label {
-    background-color: #111;
+    background-color: purple;
     border-radius: 50px;
     cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 5px;
-    position: relative;
-    height: 26px;
+    position: relative;  /* Torna o container relativo para o movimento da bolinha */
     width: 50px;
-    transform: scale(1.5);
-    align-items: stretch;
-
-}
-
-.label .ball {
+    height: 26px;
+    padding: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .checkbox {
+    display: none; /* Esconde o checkbox */
+  }
+  
+  .label .ball {
     background-color: #fff;
     border-radius: 50%;
-    position: absolute;
-    top: 2px;
-    left: 2px;
+    position:absolute;
+    top: 6px;
+    left: 6px;
     height: 22px;
     width: 22px;
-    transform: translateX(0px);
-    transition: transform 0.2s linear;
-}
-
-.checkbox:checked+.label .ball {
-    transform: translateX(24px);
-}
-
-.fa-moon {
-    color: #f1c40f;
-}
-
-.fa-sun {
-    color: #f39c12;
-}
+    transition: transform 0.3s ease-in-out, color 0.3s linear; /* Transição suave */
+  }
+  
+  /* Quando o checkbox estiver marcado */
+  .checkbox:checked + .ball {
+    transform: translateX(26px); /* Move a bolinha para a direita */
+  }

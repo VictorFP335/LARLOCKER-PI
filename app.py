@@ -709,6 +709,43 @@ def update_account():
         return jsonify({'status': 'error', 'message': 'Usuário não autenticado.'}), 403
 
     
+@app.route('/change')
+def change():
+    return render_template('trocar_senha.html')
+
+@app.route('/update_senha', methods=['POST'])
+def update_senha():
+    data = request.get_json()
+    email = data.get('email')
+    senha = data.get('senha')
+    confirmSenha = data.get('confirmSenha')
+
+    if not email or not senha or not confirmSenha:
+        return jsonify({'status': 'error', 'message': 'Todos os campos são obrigatórios.'}), 400
+
+    if senha != confirmSenha:
+        return jsonify({'status': 'error', 'message': 'As senhas não coincidem.'}), 400
+
+    try:
+        cursor = mysql.connection.cursor()
+        cursor.execute("USE pi;")
+        
+        # Verificar se o email existe
+        cursor.execute('SELECT COUNT(*) FROM cliente WHERE email = %s', (email,))
+        if cursor.fetchone()[0] == 0:
+            return jsonify({'status': 'error', 'message': 'Email não encontrado.'}), 404
+        
+        # Hash da senha
+        hashed_password = generate_password_hash(senha)
+        cursor.execute('UPDATE cliente SET senha = %s WHERE email = %s', (hashed_password, email))
+        mysql.connection.commit()
+        cursor.close()
+        print('atualizo')
+        return jsonify({'status': 'success', 'message': 'Senha atualizada com sucesso.'}), 200
+    except Exception as e:
+        print("Erro ao atualizar a senha do usuário:", e)
+        return jsonify({'status': 'error', 'message': 'Erro ao atualizar a senha do usuário.'}), 500
+
 @app.route('/help')
 def help():
     if 'username' in session:
@@ -723,10 +760,6 @@ def dashboard():
         return render_template('inicio_comodo.html')
     else:
         return redirect(url_for('home'))
-    
-@app.route('/change')
-def change():
-    return render_template('trocar_senha.html')
 
 @app.route('/logout')
 def logout():

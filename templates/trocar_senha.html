@@ -10,17 +10,18 @@
   <body>
     <img src="{{ url_for('static', filename='img/larlocker.png') }}" alt="Logo" />
     <h2>Trocar Senha</h2>
-    <form action="/cadastro" method="post">
+    <form id="trocarSenhaForm" onsubmit="event.preventDefault(); update_senha();">
       <label>Email:</label>
-      <input type="email" name="email" placeholder="Digite seu email" required />
+      <input id="email" type="email" name="email" placeholder="Digite seu email" required />
       <br />
       <label>Nova Senha:</label>
-      <input type="password" name="password" placeholder="Digite a senha" required />
+      <input id="senha" type="password" name="password" placeholder="Digite a senha" required />
       <br />
       <label>Confirme Sua Nova Senha:</label>
-      <input type="password" name="confirm_password" placeholder="Confirme a senha" required />
+      <input id="confirmSenha" type="password" name="confirm_password" placeholder="Confirme a senha" required />
       <br />
-      <button id="enviar" type="submit" value="Cadastrar">Confirmar</button>
+      <button id="enviar" type="submit">Confirmar</button>
     </form>
+    <script src="{{ url_for('static', filename='js/script_trocar_senha.js') }}"></script>
   </body>
 </html>

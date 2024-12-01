@@ -27,13 +27,31 @@ input {
     padding: 10px;
 }
 
-label {
-    text-align: left;
+button {
+    border: none;
+    border-radius: 50px;
+    margin: 3px;
+    background-color: purple;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
 }
 
-#enviar:hover {
-    border-radius: 30px;
-    background-color: #800080;
+button:hover {
+    background-color: rgb(145, 0, 145);
+}
+
+label {
+    margin-bottom: 3px;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: rgb(145, 0, 145);
+}
+
+label {
+    text-align: left;
 }
 
 section {
@@ -47,46 +65,8 @@ a {
     color: purple;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
-social-login-container {
-    width: 300px;
-    margin: 0 auto;
-}
-
 h2 {
     color: #c40de4;
-}
-
-.btn-social {
-    display: block;
-    margin: 10px 0;
-    padding: 10px;
-    text-align: left;
-    border-radius: 5px;
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-}
-
-.btn-social img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-}
-
-.fb {
-    background-color: #3b5998;
-}
-
-.ig {
-    background-color: #E1306C;
-}
-
-.gmail {
-    background-color: #D44638;
 }
 
 .error {

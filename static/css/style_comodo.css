@@ -1,6 +1,6 @@
 html {
     background-color: black;
-    border: 3px solid black;
+    /*border: 3px solid black;*/
     width: 100%;
     height: 100%;
     font-family: Trebuchet MS, sans-serif;
@@ -12,11 +12,10 @@ body {
     align-items: stretch;
     /*border: 3px solid yellow;*/
     height: 100%;
-    transition: background 0.2s linear;
 }
 
 aside {
-    border: 3px solid purple;
+    /*border: 3px solid purple;*/
     background-color: rgb(180, 180, 180);
     color: black;
     height: 100%;

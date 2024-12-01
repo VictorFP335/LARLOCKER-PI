@@ -578,13 +578,13 @@ def search_api():
                 {'name': 'Listas de Compra', 'url': url_for('list')},
                 {'name': 'Lista', 'url': url_for('list')},
                 {'name': 'Compra', 'url': url_for('list')},
-                {'name': 'Adicionar lista de compra', 'url': url_for('lits')},
+                {'name': 'Adicionar lista de compra', 'url': url_for('list')},
                 {'name': 'Adicionar lista de compras', 'url': url_for('list')},   
-                {'name': 'Adicionar listas de compra', 'url': url_for('lits')},
+                {'name': 'Adicionar listas de compra', 'url': url_for('list')},
                 {'name': 'Adicionar listas de compras', 'url': url_for('list')}, 
-                {'name': 'Criar lista de compra', 'url': url_for('lits')},
+                {'name': 'Criar lista de compra', 'url': url_for('list')},
                 {'name': 'Criar lista de compras', 'url': url_for('list')},   
-                {'name': 'Criar listas de compra', 'url': url_for('lits')},
+                {'name': 'Criar listas de compra', 'url': url_for('list')},
                 {'name': 'Criar listas de compras', 'url': url_for('list')},
 
                 # Conta
@@ -720,9 +720,13 @@ def help():
 def dashboard():
     if 'username' in session:
         flash(f'Bem-vindo, {session["fullname"].split()[0]}!', 'boas vindas')
-        return render_template('inicio_comodo.html', img_path=url_for('static', filename='img/img_comodo'))
+        return render_template('inicio_comodo.html')
     else:
         return redirect(url_for('home'))
+    
+@app.route('/change')
+def change():
+    return render_template('trocar_senha.html')
 
 @app.route('/logout')
 def logout():

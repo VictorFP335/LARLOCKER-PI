@@ -8,14 +8,14 @@
     <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png" />
   </head>
   <body>
+    <img src="{{ url_for('static', filename='img/larlocker.png') }}" alt="Logo" />
     <h2>Recuperar Senha</h2>
     <form action="#" method="post">
-      <img src="{{ url_for('static', filename='img/larlocker.png') }}" alt="Logo" />
       <label>Email cadastrado:</label>
       <input type="email" placeholder="Digite seu email" required />
       <br /><br />
-      <input id="enviar" type="submit" value="Enviar link de recuperação" />
-      <br /><a href="{{ url_for('home') }}">Voltar para Login</a>
+      <button id="enviar" type="submit" value="Enviar link de recuperação">Enviar link de recuperação</button>
+      <br /><a href="{{ url_for('login') }}">Voltar para Login</a>
     </form>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
   </body>

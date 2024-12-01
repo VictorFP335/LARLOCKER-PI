@@ -43,7 +43,7 @@ async function submitNewItem() {
         return;
     }
 
-    if(quantidadeProduto < 0){
+    if (quantidadeProduto < 0) {
         alert("Defina um valor válido para a quantidade de produtos!")
     }
 
@@ -183,7 +183,7 @@ async function updateQuantity(row, change) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, idLista: idLista})
+                body: JSON.stringify({ nomeProduto: nomeProduto, idLista: idLista })
             });
 
             const result = await response.json();
@@ -205,7 +205,7 @@ async function updateQuantity(row, change) {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity, idLista:idLista})
+                body: JSON.stringify({ nomeProduto: nomeProduto, qtdProduto: currentQuantity, idLista: idLista })
             });
 
             const result = await response.json();
@@ -226,6 +226,20 @@ window.onclick = function (event) {
         modal.style.display = 'none';
     }
 };
+
+const chk = document.getElementById('chk');
+const imagem = document.getElementById('imagem');
+
+chk.addEventListener('change', () => {
+    document.body.classList.toggle('white'); // Alterna o modo claro/escuro
+
+    // Alterna a imagem da logo com base no modo
+    if (document.body.classList.contains('white')) {
+        imagem.setAttribute('src', 'static/img/larlocker_branco.png'); // Logo modo claro
+    } else {
+        imagem.setAttribute('src', 'static/img/larlocker.png'); // Logo modo escuro
+    }
+});
 
 window.onload = function () {
     const urlParams = new URLSearchParams(window.location.search);

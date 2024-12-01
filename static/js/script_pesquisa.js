@@ -67,7 +67,7 @@ function searchDynamicResults(searchTerm) {
 
             if (data.status === "success" && data.results.length > 0) {
                 // Filtra os resultados para exibir apenas aqueles que começam com o termo
-                const filteredResults = data.results.filter(result => 
+                const filteredResults = data.results.filter(result =>
                     result.name.toLowerCase().startsWith(searchTerm.toLowerCase())
                 );
 
@@ -156,6 +156,20 @@ document.getElementById("searchButton").addEventListener("click", function () {
         performSearch(query);
     } else {
         alert("Por favor, insira um termo de busca.");
+    }
+});
+
+const chk = document.getElementById('chk');
+const imagem = document.getElementById('imagem');
+
+chk.addEventListener('change', () => {
+    document.body.classList.toggle('white'); // Alterna o modo claro/escuro
+
+    // Alterna a imagem da logo com base no modo
+    if (document.body.classList.contains('white')) {
+        imagem.setAttribute('src', 'static/img/larlocker_branco.png'); // Logo modo claro
+    } else {
+        imagem.setAttribute('src', 'static/img/larlocker.png'); // Logo modo escuro
     }
 });
 

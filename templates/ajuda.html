@@ -21,9 +21,6 @@
           <a href="{{ url_for('list') }}"><img src="{{ url_for('static', filename='img/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
-        </li>
-        <li>
           <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
         </li>
         <li>
@@ -32,30 +29,25 @@
         <li>
           <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
         </li>
+        <li>
+          <label class="label" for="chk">
+            <input type="checkbox" class="checkbox" id="chk" />
+            <div class="ball"></div>
+          </label>
+          Alternar Modo
+        </li>
       </ul>
     </aside>
 
     <main>
       <div class="container">
         <!-- Logo -->
-        <img src="{{ url_for('static', filename='img/larlocker.png') }}" class="logo" width="60%" /><br />
+        <img id="imagem" src="{{ url_for('static', filename='img/larlocker.png') }}" class="logo" width="60%" /><br />
 
         <!-- FAQ Container -->
         <div class="faq-container">
           <h1>FAQ - Perguntas Frequentes</h1>
 
-          <!-- Pergunta 1 -->
-          <div class="faq-item">
-            <div class="faq-question" onclick="toggleAnswer(this)">
-              <h3>Como funciona o FAQ?</h3>
-              <span class="icon">+</span>
-            </div>
-            <div class="faq-answer">
-              <p>Você pode clicar nas perguntas para ver ou ocultar as respostas das perguntas mais frequentes. Ou use nossas caixas de formulário abaixo para enviar suas dúvidas ou reclamações direto à nossa equipe.</p>
-            </div>
-          </div>
-
-          <!-- Pergunta 2 -->
           <div class="faq-item">
             <div class="faq-question" onclick="toggleAnswer(this)">
               <h3>Quem somos?</h3>
@@ -66,7 +58,6 @@
             </div>
           </div>
 
-          <!-- Pergunta 3 -->
           <div class="faq-item">
             <div class="faq-question" onclick="toggleAnswer(this)">
               <h3>Qual o objetivo deste site?</h3>
@@ -77,22 +68,17 @@
             </div>
           </div>
 
-          <!-- Formulário de Contato -->
-          <div class="contact-form">
-            <h2>Envie sua Pergunta ao Suporte</h2>
-            <form>
-              <label for="name">Nome:</label>
-              <input type="text" id="name" name="name" placeholder="Seu nome" required />
-
-              <label for="email">Email:</label>
-              <input type="email" id="email" name="email" placeholder="Seu email" required />
-
-              <label for="message">Mensagem:</label>
-              <textarea id="message" name="message" placeholder="Sua mensagem ao suporte" required></textarea>
-
-              <button type="submit">Enviar Pergunta</button>
-            </form>
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(this)">
+              <h3>O que é o sistema de alerta?</h3>
+              <span class="icon">+</span>
+            </div>
+            <div class="faq-answer">
+              <p>O sistema enviará alertas assim que alimentos cadastrados estiverem próximos ao vencimento (7 dias), destacando o produto e o cômodo em que o mesmo se encontra.</p>
+            </div>
           </div>
+
+
         </div>
       </div>
       <script src="{{ url_for('static', filename='js/ajuda.js') }}"></script>

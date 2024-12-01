@@ -4,27 +4,23 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cadastro - Larlocker</title>
+    <title>Trocar Senha - Larlocker</title>
     <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png" />
   </head>
   <body>
     <img src="{{ url_for('static', filename='img/larlocker.png') }}" alt="Logo" />
-    <h2>Criar Conta</h2>
+    <h2>Trocar Senha</h2>
     <form action="/cadastro" method="post">
-      <label>Nome Completo:</label>
-      <input type="text" name="fullname" placeholder="Digite seu nome" required />
-      <br />
       <label>Email:</label>
       <input type="email" name="email" placeholder="Digite seu email" required />
       <br />
-      <label>Senha:</label>
-      <input type="password" name="password" placeholder="Digite uma senha" required />
+      <label>Nova Senha:</label>
+      <input type="password" name="password" placeholder="Digite a senha" required />
       <br />
-      <label>Confirme sua Senha:</label>
-      <input type="password" name="confirm_password" placeholder="Confirme sua senha" required />
+      <label>Confirme Sua Nova Senha:</label>
+      <input type="password" name="confirm_password" placeholder="Confirme a senha" required />
       <br />
-      <button id="enviar" type="submit" value="Cadastrar">Entrar</button>
-      <br /><a href="{{ url_for('login') }}">Já tem uma conta? Entrar</a>
+      <button id="enviar" type="submit" value="Cadastrar">Confirmar</button>
     </form>
   </body>
 </html>

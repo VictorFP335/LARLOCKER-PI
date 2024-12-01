@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_inicio_lista.css') }}">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_inicio_lista.css') }}" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inicio - Listas de Compras</title>
     <link rel="icon" href="{{ url_for('static', filename='img/logo.png') }}" type="image/png" />
   </head>
@@ -22,9 +21,6 @@
           <a href="{{ url_for('list') }}"><img src="{{ url_for('static', filename='img/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
-        </li>
-        <li>
           <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
         </li>
         <li>
@@ -33,43 +29,48 @@
         <li>
           <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
         </li>
+        <li>
+          <label class="label" for="chk">
+            <input type="checkbox" class="checkbox" id="chk" />
+            <div class="ball"></div>
+          </label>
+          Alternar Modo
+        </li>
       </ul>
     </aside>
 
     <main data-listaurl="{{ url_for('listas') }}" data-imgpath="{{ url_for('static', filename='img/carrinho.png') }}">
-        <img src="{{ url_for('static', filename='img/larlocker.png') }}" width="60%"><br>
-        <h1>Listas de Compras</h1>
-        <section id="listaContainer">
-            <!-- As listas são adicionadas aqui -->
-        </section>
+      <img id="imagem" src="{{ url_for('static', filename='img/larlocker.png') }}" width="60%" /><br />
+      <h1>Listas de Compras</h1>
+      <section id="listaContainer">
+        <!-- As listas são adicionadas aqui -->
+      </section>
 
-        <button onclick="showAddRoomForm()">Adicionar Lista de Compra</button>
+      <button onclick="showAddRoomForm()">Adicionar Lista de Compra</button>
 
-        <div id="editModal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeEditModal()">&times;</span>
-                <h2>Editar Nome da Lista de Compra</h2>
-                <input type="text" id="editNomeLista" placeholder="Novo nome da lista" required>
-                <br><br>
-                <button onclick="submitEdit()">Salvar</button>
-            </div>
+      <div id="editModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeEditModal()">&times;</span>
+          <h2>Editar Nome da Lista de Compra</h2>
+          <input type="text" id="editNomeLista" placeholder="Novo nome da lista" required />
+          <br /><br />
+          <button onclick="submitEdit()">Salvar</button>
         </div>
-        <div id="modalRoom" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="cancelAddRoom()">&times;</span>
-                <h2>Adicionar Nova Lista de Compra</h2>
-                <input type="text" id="nomeLista" placeholder="Nome da Lista de Compra" required>
-                <br><br>
-                <button onclick="submitNewRoom()">Adicionar</button>
-            </div>
+      </div>
+      <div id="modalRoom" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="cancelAddRoom()">&times;</span>
+          <h2>Adicionar Nova Lista de Compra</h2>
+          <input type="text" id="nomeLista" placeholder="Nome da Lista de Compra" required />
+          <br /><br />
+          <button onclick="submitNewRoom()">Adicionar</button>
         </div>
-
+      </div>
     </main>
     <script>
       const jsonPath = "{{ url_for('static', filename='json/listas.json') }}"
       console.log('Caminho JSON: ', jsonPath) // Para depurar e ver a URL no console
     </script>
     <script src="{{ url_for('static', filename='js/script_inicio_lista.js') }}"></script>
-</body>
-
+  </body>
 </html>

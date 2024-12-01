@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
   <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style_inicio_comodo.css') }}" />
     <meta charset="UTF-8" />
@@ -21,9 +21,6 @@
           <a href="{{ url_for('list') }}"><img src="{{ url_for('static', filename='img/carrinho.png') }}" width="40px" height="40px" /><br />Lista de compras</a>
         </li>
         <li>
-          <a href="#"><img src="{{ url_for('static', filename='img/tema.png') }}" width="40px" height="40px" /><br />Modo claro</a>
-        </li>
-        <li>
           <a href="{{ url_for('account') }}"><img src="{{ url_for('static', filename='img/perfil.png') }}" width="40px" height="40px" /><br />Conta</a>
         </li>
         <li>
@@ -32,12 +29,18 @@
         <li>
           <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='img/sair.png') }}" width="40px" height="40px" /><br />Sair</a>
         </li>
+        <li>
+          <label class="label" for="chk">
+            <input type="checkbox" class="checkbox" id="chk" />
+            <div class="ball"></div>
+          </label>
+          Alternar Modo
+        </li>
       </ul>
     </aside>
 
-    
     <main data-comodourl="{{ url_for('comodos') }}" data-imgpath="{{ url_for('static', filename='img/comodo.png') }}">
-      <img src="{{ url_for('static', filename='img/larlocker.png') }}" width="60%" /><br />
+      <img id="imagem" src="{{ url_for('static', filename='img/larlocker.png') }}" width="60%" /><br />
       <h1>Cômodos</h1>
       {% with messages=get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -58,38 +61,39 @@
 
       <div id="editModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
-            <h2>Editar Nome do Cômodo</h2>
-            <input type="text" id="editNomeComodo" placeholder="Novo nome do cômodo" required>
-            <br><br>
-            <button onclick="submitEdit()">Salvar</button>
+          <span class="close" onclick="closeEditModal()">&times;</span>
+          <h2>Editar Nome do Cômodo</h2>
+          <input type="text" id="editNomeComodo" placeholder="Novo nome do cômodo" required />
+          <br /><br />
+          <button onclick="submitEdit()">Salvar</button>
         </div>
-    </div>
-    
-    <div id="modalRoom" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="cancelAddRoom()">&times;</span>
-            <h2>Adicionar Novo Cômodo</h2>
-            <input type="text" id="nomeComodo" placeholder="Nome do cômodo" required>
-            <br><br>
-            <button onclick="submitNewRoom()">Adicionar</button>
-        </div>
-    </div>
-    
-    <div id="alertModal" class="aviso-modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeAlertModal()">&times;</span>
-            <h2>Aviso</h2>
-            <img src="{{ url_for('static', filename='img/alerta.png') }}" width="45%" height="45%" a>
-            <p id="alertMessage"></p>
-            <button onclick="closeAlertModal()">Entendido</button>
-        </div>
-    </div>
+      </div>
 
+      <div id="modalRoom" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="cancelAddRoom()">&times;</span>
+          <h2>Adicionar Novo Cômodo</h2>
+          <input type="text" id="nomeComodo" placeholder="Nome do cômodo" required />
+          <br /><br />
+          <button onclick="submitNewRoom()">Adicionar</button>
+        </div>
+      </div>
+
+      <div id="alertModal" class="aviso-modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeAlertModal()">&times;</span>
+          <h2>Aviso</h2>
+          <img src="{{ url_for('static', filename='img/alerta.png') }}" width="45%" height="45%" a />
+          <p id="alertMessage"></p>
+          <button onclick="closeAlertModal()">Entendido</button>
+        </div>
+      </div>
+    </main>
     <script>
       const jsonPath = "{{ url_for('static', filename='json/comodos.json') }}"
       console.log('Caminho JSON: ', jsonPath) // Para depurar e ver a URL no console
     </script>
     <script src="{{ url_for('static', filename='js/script_inicio_comodo.js') }}"></script>
+    <script src="https://kit.fontawesome.com/998c60ef77.js" crossorigin="anonymous"></script>
   </body>
 </html>

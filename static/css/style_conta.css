@@ -1,6 +1,6 @@
 html {
     background-color: black;
-    border: 3px solid black;
+    /*border: 3px solid black;*/
     width: 100%;
     height: 100%;
     font-family: Trebuchet MS, sans-serif;
@@ -15,7 +15,7 @@ body {
 }
 
 aside {
-    border: 3px solid purple;
+    /*border: 3px solid purple;*/
     background-color: rgb(180, 180, 180);
     color: black;
     height: 100%;
@@ -47,7 +47,7 @@ li {
     margin: 10px 0px;
     text-align: center;
     /*border: 3px solid blue;*/
-    padding: 5px;
+    padding: 0px 25%;
     letter-spacing: 1px;
 }
 
@@ -165,4 +165,100 @@ button {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+
+#toggle-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+.temas {
+    position: fixed;
+    /* Fixa o elemento na tela */
+    top: 10px;
+    /* Distância do topo */
+    right: 10px;
+    /* Distância da direita */
+    z-index: 999;
+    /* Garante que o switch fique acima de outros elementos */
+}
+
+/* Modo claro - Aplicado a todos os descendentes do body com a classe .white */
+body.white {
+    background-color: #ffffff;
+    color: #000;
+    /* Texto em preto */
+}
+
+/* Ajustando elementos específicos no modo claro */
+body.white main,
+body.white #validade {
+    background-color: #ffffff;
+    /* Fundo branco */
+    color: #000;
+    /* Texto preto */
+}
+
+/* Links no modo claro */
+body.white a {
+    color: #000;
+}
+
+body.white a:hover {
+    color: blue;
+}
+
+body.white .ball {
+    background-color: black;
+}
+
+/* Outras transições */
+body,
+main,
+th,
+button {
+    transition: background-color 0.3s linear, color 0.3s linear;
+}
+
+/* Estilo da bolinha */
+.label {
+    background-color: purple;
+    border-radius: 50px;
+    cursor: pointer;
+    position: relative;
+    /* Torna o container relativo para o movimento da bolinha */
+    width: 50px;
+    height: 26px;
+    padding: 5px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.checkbox {
+    display: none;
+    /* Esconde o checkbox */
+}
+
+.label .ball {
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    height: 22px;
+    width: 22px;
+    transition: transform 0.3s ease-in-out, color 0.3s linear;
+    /* Transição suave */
+}
+
+/* Quando o checkbox estiver marcado */
+.checkbox:checked+.ball {
+    transform: translateX(26px);
+    /* Move a bolinha para a direita */
 }
